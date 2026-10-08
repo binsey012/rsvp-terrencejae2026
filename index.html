@@ -1,0 +1,1823 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#1E3A2B" />
+  <meta name="description" content="You're invited to Terrence Jae C. Yap's Wild One Safari 1st Birthday on Sunday, November 8, 2026. RSVP here!" />
+  <meta property="og:title" content="Terrence is Turning Wild One! | Safari 1st Birthday" />
+  <meta property="og:description" content="Sunday, November 8, 2026 • Holy Mass 11:30 AM • Reception 1:00 PM at CC Resort, Porac, Pampanga" />
+  <meta property="og:image" content="img/main-photo.png" />
+  <title>Terrence is Turning Wild One! | Safari 1st Birthday Celebration</title>
+
+  <!-- Google Fonts: Playfair Display for luxe titles, Plus Jakarta Sans for crisp UI, Caveat for playful safari handwriting -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Playfair+Display:ital,wght@0,600;0,800;0,900;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Canvas Confetti CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+
+  <!-- Tone.js CDN for playful audio chimes & ambient celebratory tones -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            safari: {
+              forest: '#1E3A2B',
+              olive: '#2D4A36',
+              moss: '#425C47',
+              sage: '#8BA888',
+              gold: '#D4AF37',
+              goldLight: '#F3E5AB',
+              terracotta: '#C86D51',
+              sand: '#F7F4EB',
+              parchment: '#FAF7F0',
+              khaki: '#C2B280',
+              deepDark: '#121F17'
+            }
+          },
+          fontFamily: {
+            serif: ['"Playfair Display"', 'serif'],
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            script: ['"Caveat"', 'cursive']
+          },
+          boxShadow: {
+            'safari-card': '0 20px 40px -15px rgba(30, 58, 43, 0.12)',
+            'gold-glow': '0 0 25px rgba(212, 175, 55, 0.35)',
+            'floating': '0 25px 50px -12px rgba(18, 31, 23, 0.25)'
+          },
+          animation: {
+            'float-slow': 'float 6s ease-in-out infinite',
+            'float-delayed': 'float 7s ease-in-out 2s infinite',
+            'sway': 'sway 4s ease-in-out infinite alternate',
+            'pulse-subtle': 'pulseSubtle 3s ease-in-out infinite',
+          },
+          keyframes: {
+            float: {
+              '0%, 100%': { transform: 'translateY(0px) rotate(0deg)' },
+              '50%': { transform: 'translateY(-12px) rotate(2deg)' }
+            },
+            sway: {
+              '0%': { transform: 'rotate(-4deg)' },
+              '100%': { transform: 'rotate(4deg)' }
+            },
+            pulseSubtle: {
+              '0%, 100%': { opacity: '1', transform: 'scale(1)' },
+              '50%': { opacity: '0.85', transform: 'scale(1.03)' }
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* Custom safari ambient scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #F7F4EB;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #8BA888;
+      border-radius: 9999px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #425C47;
+    }
+
+    /* Ambient leaf pattern overlay */
+    .safari-pattern-bg {
+      background-color: #FAF7F0;
+      background-image: radial-gradient(#2D4A36 0.6px, transparent 0.6px), radial-gradient(#8BA888 0.6px, #FAF7F0 0.6px);
+      background-size: 24px 24px;
+      background-position: 0 0, 12px 12px;
+      background-opacity: 0.05;
+    }
+
+    .gold-shimmer {
+      background: linear-gradient(135deg, #BF953F 0%, #FCF6BA 25%, #B38728 50%, #FBF5B7 75%, #AA771C 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .safari-border-gold {
+      border: 2px solid #D4AF37;
+      box-shadow: inset 0 0 0 3px #FAF7F0, inset 0 0 0 4px #D4AF37;
+    }
+
+    /* Smooth leaf backdrop canvas */
+    #ambientCanvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 10;
+    }
+
+    /* ---------- Extra motion & effects (theme colours unchanged) ---------- */
+    html { -webkit-tap-highlight-color: transparent; }
+    body.splash-open { overflow: hidden; }
+
+    #scrollProgress {
+      position: fixed; top: 0; left: 0; height: 3px; width: 0; z-index: 60;
+      background: linear-gradient(90deg, #D4AF37, #8BA888, #C86D51);
+    }
+
+    /* Scroll reveal */
+    .reveal { opacity: 0; transform: translateY(28px) scale(.98); transition: opacity .8s ease, transform .8s cubic-bezier(.2,.8,.2,1); transition-delay: var(--d, 0s); }
+    .reveal.in { opacity: 1; transform: none; }
+    .reveal-left { transform: translateX(-32px); }
+    .reveal-right { transform: translateX(32px); }
+
+    /* Splash / invitation gate */
+    #splash {
+      position: fixed; inset: 0; z-index: 100; display: flex; align-items: center; justify-content: center; padding: 1.25rem;
+      background: radial-gradient(circle at 50% 30%, #2D4A36 0%, #1E3A2B 55%, #121F17 100%);
+      transition: opacity .9s ease, visibility .9s ease, transform .9s ease;
+    }
+    #splash.closing { opacity: 0; visibility: hidden; transform: scale(1.08); }
+    .splash-rays {
+      position: absolute; inset: -50%; opacity: .18; pointer-events: none;
+      background: repeating-conic-gradient(from 0deg, #D4AF37 0deg 6deg, transparent 6deg 24deg);
+      animation: spinSlow 60s linear infinite;
+      -webkit-mask-image: radial-gradient(circle, #000 0%, transparent 55%); mask-image: radial-gradient(circle, #000 0%, transparent 55%);
+    }
+    @keyframes spinSlow { to { transform: rotate(360deg); } }
+    @keyframes popIn { 0% { opacity: 0; transform: translateY(24px) scale(.9); } 100% { opacity: 1; transform: none; } }
+    .pop-in { animation: popIn .9s cubic-bezier(.2,.9,.3,1.2) both; animation-delay: var(--d, 0s); }
+
+    /* Hero entrance + ambient motion */
+    @keyframes shimmerMove { 0% { background-position: 0% 50%; } 100% { background-position: 200% 50%; } }
+    .gold-shimmer { background-size: 200% 100%; animation: shimmerMove 5s linear infinite; }
+    @keyframes ringPulse { 0% { box-shadow: 0 0 0 0 rgba(212,175,55,.55); } 100% { box-shadow: 0 0 0 26px rgba(212,175,55,0); } }
+    .ring-pulse { animation: ringPulse 2.4s ease-out infinite; }
+    @keyframes tick { 0% { transform: translateY(-6px); opacity: .3; } 100% { transform: none; opacity: 1; } }
+    .tick { animation: tick .35s ease-out; }
+    @keyframes jeepDrive { 0% { transform: translateX(-130%) rotate(-2deg); } 60% { transform: translateX(6%) rotate(1deg); } 100% { transform: translateX(0) rotate(0); } }
+    .jeep-in.in { animation: jeepDrive 1.6s cubic-bezier(.2,.8,.2,1) both; }
+    @keyframes wiggle { 0%,100% { transform: rotate(-6deg); } 50% { transform: rotate(6deg); } }
+    .wiggle { animation: wiggle 2.2s ease-in-out infinite; }
+
+    /* Floating balloons / animals background */
+    .floaty { position: fixed; bottom: -60px; z-index: 5; pointer-events: none; opacity: .5; animation: riseUp linear infinite; will-change: transform; }
+    @keyframes riseUp { 0% { transform: translateY(0) translateX(0) rotate(0); } 50% { transform: translateY(-60vh) translateX(18px) rotate(8deg); } 100% { transform: translateY(-120vh) translateX(-12px) rotate(-6deg); } }
+
+    /* Tap sparkle */
+    .spark { position: fixed; z-index: 90; pointer-events: none; font-size: 18px; animation: sparkOut .8s ease-out forwards; }
+    @keyframes sparkOut { 0% { transform: translate(-50%,-50%) scale(.4); opacity: 1; } 100% { transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) scale(1.2); opacity: 0; } }
+
+    /* Music equaliser */
+    .eq { display: inline-flex; gap: 2px; align-items: flex-end; height: 14px; }
+    .eq i { width: 3px; background: #D4AF37; border-radius: 2px; height: 4px; }
+    .eq.on i { animation: eqBar .8s ease-in-out infinite; }
+    .eq.on i:nth-child(2) { animation-delay: .2s; } .eq.on i:nth-child(3) { animation-delay: .4s; }
+    @keyframes eqBar { 0%,100% { height: 4px; } 50% { height: 14px; } }
+
+    @media (prefers-reduced-motion: reduce) {
+      .reveal { opacity: 1; transform: none; transition: none; }
+      .floaty, .splash-rays, .gold-shimmer, .ring-pulse, .wiggle { animation: none; }
+    }
+  </style>
+</head>
+
+<body class="bg-safari-parchment text-safari-deepDark font-sans antialiased relative selection:bg-safari-sage selection:text-safari-deepDark">
+
+  <!-- Ambient Leaf Particle Canvas -->
+  <canvas id="ambientCanvas"></canvas>
+  <div id="scrollProgress"></div>
+
+  <!-- Invitation Gate: tap to open (also unlocks browser audio) -->
+  <div id="splash" role="dialog" aria-label="Open invitation">
+    <div class="splash-rays"></div>
+    <div class="relative text-center max-w-sm w-full">
+      <div class="pop-in text-5xl mb-3 wiggle" style="--d:.1s">🦁</div>
+      <p class="pop-in text-xs uppercase tracking-[0.3em] text-safari-goldLight font-bold" style="--d:.25s">You're Invited</p>
+      <h2 class="pop-in font-serif font-black text-4xl text-safari-sand mt-2 leading-tight" style="--d:.4s">Terrence is<br><span class="gold-shimmer">Wild One!</span></h2>
+      <div class="pop-in relative w-40 h-40 mx-auto my-6 rounded-full p-1.5 bg-gradient-to-tr from-safari-gold via-safari-sage to-safari-forest ring-pulse" style="--d:.6s">
+        <div class="w-full h-full rounded-full overflow-hidden border-4 border-safari-parchment bg-safari-sand">
+          <img src="img/main-photo.png" alt="Terrence" class="w-full h-full object-cover object-top" />
+        </div>
+      </div>
+      <p class="pop-in font-script text-2xl text-safari-goldLight" style="--d:.8s">Sunday, November 8, 2026</p>
+      <button id="openInviteBtn" class="pop-in mt-6 px-8 py-4 rounded-full bg-safari-gold text-safari-deepDark font-bold text-sm uppercase tracking-wider shadow-gold-glow active:scale-95 transition-transform" style="--d:1s">
+        Open Invitation 🎟️
+      </button>
+      <p class="pop-in text-[11px] text-safari-sage mt-3" style="--d:1.1s">🎵 Tap to open with music</p>
+    </div>
+  </div>
+
+  <header class="fixed top-0 inset-x-0 z-40 bg-safari-parchment/90 backdrop-blur-md border-b border-safari-sage/20 transition-all duration-300">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 h-16 sm:h-20 flex items-center justify-between">
+      <!-- Safari Logo & Brand -->
+      <a href="#hero" class="flex items-center gap-2 group">
+        <span class="text-2xl sm:text-3xl filter transition-transform group-hover:scale-110">🦁</span>
+        <div class="leading-tight">
+          <span class="block text-xs uppercase tracking-widest text-safari-moss font-bold">First Birthday Safari</span>
+          <span class="font-serif font-extrabold text-sm sm:text-xl text-safari-forest tracking-tight whitespace-nowrap">TERRENCE IS WILD ONE</span>
+        </div>
+      </a>
+
+      <!-- Quick Actions -->
+      <nav class="hidden md:flex items-center gap-6 font-medium text-sm text-safari-olive">
+        <a href="#details" class="hover:text-safari-terracotta transition-colors">Details</a>
+        <a href="#timeline" class="hover:text-safari-terracotta transition-colors">Safari Trail</a>
+        <a href="#milestones" class="hover:text-safari-terracotta transition-colors">12 Mo Journey</a>
+        <a href="#registry" class="hover:text-safari-terracotta transition-colors">Explorer Registry</a>
+        <a href="#guestbook" class="hover:text-safari-terracotta transition-colors">Wishes</a>
+      </nav>
+
+      <div class="flex items-center gap-2 sm:gap-3">
+        <!-- Interactive Soundboard / Chime Toggle -->
+        <button id="soundToggleBtn" onclick="togglePartySound()" title="Toggle Safari Audio Chimes" 
+          class="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-full border border-safari-sage/40 bg-white/70 hover:bg-safari-sage/20 transition-all shadow-sm">
+          <span id="soundIcon">🔇</span>
+          <span class="eq" id="eqBars"><i></i><i></i><i></i></span>
+          <span id="soundLabel" class="hidden sm:inline">Music Off</span>
+        </button>
+
+        <!-- Primary CTA to RSVP -->
+        <a href="#rsvp" class="relative group overflow-hidden px-4 py-2 sm:px-5 sm:py-2.5 rounded-full bg-safari-forest text-safari-sand text-xs sm:text-sm font-semibold shadow-md hover:shadow-gold-glow transition-all">
+          <span class="relative z-10 flex items-center gap-1.5">
+            <span>RSVP Now</span>
+            <span class="text-xs group-hover:translate-x-1 transition-transform">🐾</span>
+          </span>
+          <div class="absolute inset-0 bg-gradient-to-r from-safari-moss to-safari-forest group-hover:opacity-90 transition-opacity"></div>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main class="pt-20 sm:pt-24 pb-16 overflow-hidden">
+
+    <section id="hero" class="relative min-h-[88vh] flex items-center justify-center px-4 sm:px-6 py-12">
+      <!-- Decorative tropical foliage SVG accents -->
+      <div class="absolute -top-12 -left-16 w-48 sm:w-80 h-48 sm:h-80 text-safari-sage/25 pointer-events-none animate-sway">
+        <svg viewBox="0 0 200 200" fill="currentColor">
+          <path d="M42.8,-58.3C54.4,-50.2,62,-37.2,67.6,-22.9C73.2,-8.5,76.9,7.2,73.1,21.9C69.4,36.5,58.3,50,44.4,59.3C30.6,68.6,14.1,73.6,-2.3,76.8C-18.7,79.9,-35,81.1,-48.5,73.4C-61.9,65.6,-72.4,48.8,-76.3,31.4C-80.1,13.9,-77.2,-4.2,-70.7,-19.9C-64.2,-35.5,-54.1,-48.7,-41.2,-56.4C-28.4,-64.1,-12.7,-66.3,1.9,-68.8C16.5,-71.4,31.3,-66.5,42.8,-58.3Z" transform="translate(100 100)" />
+        </svg>
+      </div>
+      <div class="absolute bottom-10 -right-12 w-48 sm:w-72 h-48 sm:h-72 text-safari-khaki/20 pointer-events-none animate-float-delayed">
+        <svg viewBox="0 0 200 200" fill="currentColor">
+          <path d="M47.7,-64.4C61.3,-56.3,71.7,-42.6,76.5,-27.1C81.3,-11.5,80.4,5.9,74.5,21.6C68.6,37.3,57.7,51.4,43.5,60.8C29.4,70.2,12,74.9,-4.8,81.5C-21.7,88.2,-38.1,96.8,-51.1,90.4C-64.1,84,-73.7,62.6,-78.9,43.1C-84.1,23.6,-85,-4,-78.9,-27.8C-72.9,-51.7,-59.9,-71.7,-43.3,-78.7C-26.7,-85.7,-6.6,-79.6,9.8,-92.9C26.1,-106.3,34.1,-72.5,47.7,-64.4Z" transform="translate(100 100)" />
+        </svg>
+      </div>
+
+      <!-- Main Invitation Card Container -->
+      <div class="relative w-full max-w-2xl bg-white rounded-3xl p-6 sm:p-10 shadow-safari-card border border-safari-sage/30 relative z-20 transition-transform duration-500 hover:shadow-floating">
+        
+        <!-- Wax Seal Badge & Header Ribbon -->
+        <div class="absolute -top-7 left-1/2 -translate-x-1/2 flex items-center justify-center">
+          <div class="relative w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-gradient-to-br from-safari-gold via-amber-600 to-safari-forest p-1 shadow-lg animate-pulse-subtle flex items-center justify-center">
+            <div class="w-full h-full rounded-full bg-safari-forest flex flex-col items-center justify-center border border-safari-goldLight text-safari-goldLight">
+              <span class="text-xs tracking-tighter uppercase font-bold">1ST</span>
+              <span class="text-base leading-none">🦁</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="text-center mt-6">
+          <!-- Safari Explorer Subtitle -->
+          <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-safari-sand border border-safari-khaki/40 text-safari-moss text-xs sm:text-sm font-semibold tracking-wider uppercase mb-3">
+            <span>🌿</span>
+            <span>Grab Your Binoculars & Safari Hats</span>
+            <span>🌿</span>
+          </div>
+
+          <h2 class="font-script text-3xl sm:text-4xl text-safari-terracotta -rotate-2 reveal">Born to be wild!</h2>
+
+          <!-- Main Hero Heading -->
+          <h1 class="font-serif font-black text-4xl sm:text-6xl text-safari-forest tracking-tight mt-1 mb-2 reveal" style="--d:.1s">
+            TERRENCE IS <span class="gold-shimmer block sm:inline font-black">WILD ONE!</span>
+          </h1>
+          <p class="font-serif font-bold text-lg sm:text-2xl text-safari-moss reveal" style="--d:.15s">Terrence Jae C. Yap</p>
+          <p class="text-[11px] sm:text-xs uppercase tracking-[0.25em] text-safari-terracotta font-bold mb-4 reveal" style="--d:.2s">1st Birthday</p>
+
+          <p class="text-safari-olive/80 text-sm sm:text-base max-w-lg mx-auto mb-6 reveal" style="--d:.25s">
+            Join our intrepid explorer as we celebrate his first year of adventures, cuddles, roars, and milestone expeditions in the savanna jungle!
+          </p>
+
+          <!-- Featured Baby Photo Frame with Safari Leaves Laurel -->
+          <div class="relative inline-block my-3 reveal" style="--d:.3s">
+            <div class="w-44 h-44 sm:w-52 sm:h-52 rounded-full p-2 bg-gradient-to-tr from-safari-gold via-safari-sage to-safari-forest shadow-xl mx-auto relative group ring-pulse">
+              <div class="w-full h-full rounded-full overflow-hidden border-4 border-white bg-safari-sand relative">
+                <img 
+                  id="birthdayHeroImg"
+                  src="img/main-photo.png" 
+                  alt="Terrence Jae, the birthday boy" 
+                  class="w-full h-full object-cover object-top scale-110 group-hover:scale-125 transition-transform duration-700"
+                />
+                <div class="absolute inset-0 bg-gradient-to-t from-safari-forest/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end justify-center pb-2">
+                  <span class="text-white text-[11px] font-bold tracking-wide">Chief Explorer Terrence</span>
+                </div>
+              </div>
+
+              <!-- Animal Stickers Floating on Hero -->
+              <span class="absolute -bottom-2 -left-2 text-3xl sm:text-4xl filter drop-shadow-md animate-bounce" style="animation-duration: 2.8s;">🦒</span>
+              <span class="absolute -top-2 -right-2 text-3xl sm:text-4xl filter drop-shadow-md animate-bounce" style="animation-duration: 3.2s;">🐒</span>
+            </div>
+          </div>
+
+          <!-- Key Event Overview Pills -->
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 my-6 text-left">
+            <div class="flex items-center gap-3 p-3 rounded-2xl bg-safari-sand/80 border border-safari-sage/30 reveal" style="--d:.1s">
+              <div class="w-10 h-10 shrink-0 rounded-xl bg-safari-sage/20 flex items-center justify-center text-xl text-safari-forest">📅</div>
+              <div>
+                <p class="text-[11px] uppercase tracking-wider text-safari-moss font-bold">When</p>
+                <p class="text-xs sm:text-sm font-bold text-safari-deepDark" id="displayDate">Sunday, Nov 8, 2026</p>
+                <p class="text-[11px] text-safari-olive/80">Mass 11:30 AM • Party 1:00 PM</p>
+              </div>
+            </div>
+
+            <div class="flex items-center gap-3 p-3 rounded-2xl bg-safari-sand/80 border border-safari-sage/30 reveal" style="--d:.2s">
+              <div class="w-10 h-10 shrink-0 rounded-xl bg-safari-sage/20 flex items-center justify-center text-xl text-safari-forest">📍</div>
+              <div>
+                <p class="text-[11px] uppercase tracking-wider text-safari-moss font-bold">Where</p>
+                <p class="text-xs sm:text-sm font-bold text-safari-deepDark">CC Resort, Porac</p>
+                <p class="text-[11px] text-safari-olive/80">Church: Angeles City, Pampanga</p>
+              </div>
+            </div>
+
+            <div class="flex items-center gap-3 p-3 rounded-2xl bg-safari-sand/80 border border-safari-sage/30 reveal" style="--d:.3s">
+              <div class="w-10 h-10 shrink-0 rounded-xl bg-safari-sage/20 flex items-center justify-center text-xl text-safari-forest">👒</div>
+              <div>
+                <p class="text-[11px] uppercase tracking-wider text-safari-moss font-bold">Theme / Dress</p>
+                <p class="text-xs sm:text-sm font-bold text-safari-deepDark">Safari Chic</p>
+                <p class="text-[11px] text-safari-olive/80">Khaki, earth tones & prints</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-8 pt-6 border-t border-safari-sage/25">
+            <p class="text-xs uppercase tracking-widest text-safari-moss font-bold mb-3">Safari Expedition Launches In</p>
+            <div class="grid grid-cols-4 gap-2 sm:gap-4 max-w-md mx-auto">
+              <div class="bg-safari-parchment p-2.5 rounded-2xl border border-safari-sage/30 shadow-sm text-center">
+                <span id="countdownDays" class="block font-serif font-black text-2xl sm:text-3xl text-safari-forest">00</span>
+                <span class="text-[10px] sm:text-xs font-semibold uppercase tracking-wider text-safari-olive">Days</span>
+              </div>
+              <div class="bg-safari-parchment p-2.5 rounded-2xl border border-safari-sage/30 shadow-sm text-center">
+                <span id="countdownHours" class="block font-serif font-black text-2xl sm:text-3xl text-safari-forest">00</span>
+                <span class="text-[10px] sm:text-xs font-semibold uppercase tracking-wider text-safari-olive">Hours</span>
+              </div>
+              <div class="bg-safari-parchment p-2.5 rounded-2xl border border-safari-sage/30 shadow-sm text-center">
+                <span id="countdownMinutes" class="block font-serif font-black text-2xl sm:text-3xl text-safari-forest">00</span>
+                <span class="text-[10px] sm:text-xs font-semibold uppercase tracking-wider text-safari-olive">Mins</span>
+              </div>
+              <div class="bg-safari-parchment p-2.5 rounded-2xl border border-safari-sage/30 shadow-sm text-center">
+                <span id="countdownSeconds" class="block font-serif font-black text-2xl sm:text-3xl text-safari-terracotta">00</span>
+                <span class="text-[10px] sm:text-xs font-semibold uppercase tracking-wider text-safari-olive">Secs</span>
+              </div>
+            </div>
+
+            <!-- Action button group -->
+            <div class="flex flex-wrap items-center justify-center gap-3 mt-7">
+              <a href="#rsvp" class="px-6 py-3 rounded-full bg-safari-forest text-safari-goldLight font-bold text-sm shadow-md hover:shadow-lg hover:bg-safari-deepDark transition-all flex items-center gap-2">
+                <span>Confirm Your Safari Ticket</span>
+                <span>🎟️</span>
+              </a>
+
+              <button onclick="addToCalendarHandler()" class="px-5 py-3 rounded-full bg-white border border-safari-sage/50 text-safari-forest font-semibold text-sm hover:bg-safari-sand transition-all flex items-center gap-2 shadow-sm">
+                <span>Add to Calendar</span>
+                <span>📅</span>
+              </button>
+
+              <button onclick="triggerConfettiShower()" class="px-4 py-3 rounded-full bg-amber-100/70 border border-safari-gold/50 text-amber-900 font-semibold text-sm hover:bg-amber-100 transition-all flex items-center gap-1.5 shadow-sm">
+                <span>Roar & Celebrate!</span>
+                <span>🎉</span>
+              </button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <section id="timeline" class="py-16 px-4 sm:px-6 max-w-4xl mx-auto">
+      <div class="text-center mb-12">
+        <span class="text-xs uppercase tracking-widest text-safari-terracotta font-bold">Expedition Plan</span>
+        <h2 class="font-serif font-black text-3xl sm:text-4xl text-safari-forest mt-1">The Safari Trail Itinerary</h2>
+        <p class="text-safari-olive/80 text-sm max-w-md mx-auto mt-2">Pack your adventure hats! Here is the schedule for Terrence's big day on Sunday, November 8, 2026.</p>
+      </div>
+
+      <div class="relative border-l-2 border-dashed border-safari-sage/60 ml-4 sm:ml-32 space-y-8">
+
+        <!-- Step 1 -->
+        <div class="relative pl-6 sm:pl-8 group reveal reveal-left">
+          <div class="absolute -left-[17px] top-1 w-8 h-8 rounded-full bg-safari-forest text-safari-goldLight border-4 border-safari-parchment flex items-center justify-center text-xs shadow">
+            1
+          </div>
+          <div class="sm:absolute sm:-left-32 sm:top-1 sm:text-right sm:w-24 text-xs font-bold uppercase tracking-wider text-safari-moss mb-1 sm:mb-0">
+            11:30 AM
+          </div>
+          <div class="bg-white p-5 rounded-2xl border border-safari-sage/30 shadow-sm transition-all group-hover:border-safari-sage group-hover:shadow-md group-hover:-translate-y-0.5">
+            <div class="flex items-center gap-2 font-serif font-bold text-lg text-safari-forest">
+              <span>Holy Mass at the Basilica</span>
+              <span>⛪</span>
+            </div>
+            <p class="text-sm text-safari-olive mt-1">
+              Join us as we give thanks for Terrence's first year of life at the Minor Basilica and Parish of Our Lady of the Most Holy Rosary, Angeles City.
+            </p>
+          </div>
+        </div>
+
+        <!-- Step 2 -->
+        <div class="relative pl-6 sm:pl-8 group reveal reveal-left">
+          <div class="absolute -left-[17px] top-1 w-8 h-8 rounded-full bg-safari-moss text-safari-goldLight border-4 border-safari-parchment flex items-center justify-center text-xs shadow">
+            2
+          </div>
+          <div class="sm:absolute sm:-left-32 sm:top-1 sm:text-right sm:w-24 text-xs font-bold uppercase tracking-wider text-safari-moss mb-1 sm:mb-0">
+            12:30 PM
+          </div>
+          <div class="bg-white p-5 rounded-2xl border border-safari-sage/30 shadow-sm transition-all group-hover:border-safari-sage group-hover:shadow-md group-hover:-translate-y-0.5">
+            <div class="flex items-center gap-2 font-serif font-bold text-lg text-safari-forest">
+              <span>Photos & Safari Convoy to Porac</span>
+              <span>🚙</span>
+            </div>
+            <p class="text-sm text-safari-olive mt-1">
+              Family photos at the church steps, then off we go! Follow the safari trail from Angeles City to CC Resort in Porac, Pampanga.
+            </p>
+          </div>
+        </div>
+
+        <!-- Step 3 -->
+        <div class="relative pl-6 sm:pl-8 group reveal reveal-left">
+          <div class="absolute -left-[17px] top-1 w-8 h-8 rounded-full bg-safari-terracotta text-safari-goldLight border-4 border-safari-parchment flex items-center justify-center text-xs shadow">
+            3
+          </div>
+          <div class="sm:absolute sm:-left-32 sm:top-1 sm:text-right sm:w-24 text-xs font-bold uppercase tracking-wider text-safari-moss mb-1 sm:mb-0">
+            1:00 PM
+          </div>
+          <div class="bg-white p-5 rounded-2xl border border-safari-sage/30 shadow-sm transition-all group-hover:border-safari-sage group-hover:shadow-md group-hover:-translate-y-0.5">
+            <div class="flex items-center gap-2 font-serif font-bold text-lg text-safari-forest">
+              <span>Jungle Gate Welcome & Registration</span>
+              <span>🍹</span>
+            </div>
+            <p class="text-sm text-safari-olive mt-1">
+              Reception opens at CC Resort. Guest check-in, safari explorer pass collection, welcome drinks, and jungle photo-booth snaps.
+            </p>
+          </div>
+        </div>
+
+        <!-- Step 4 -->
+        <div class="relative pl-6 sm:pl-8 group reveal reveal-left">
+          <div class="absolute -left-[17px] top-1 w-8 h-8 rounded-full bg-safari-gold text-safari-forest border-4 border-safari-parchment flex items-center justify-center text-xs shadow">
+            4
+          </div>
+          <div class="sm:absolute sm:-left-32 sm:top-1 sm:text-right sm:w-24 text-xs font-bold uppercase tracking-wider text-safari-moss mb-1 sm:mb-0">
+            1:45 PM
+          </div>
+          <div class="bg-white p-5 rounded-2xl border border-safari-sage/30 shadow-sm transition-all group-hover:border-safari-sage group-hover:shadow-md group-hover:-translate-y-0.5">
+            <div class="flex items-center gap-2 font-serif font-bold text-lg text-safari-forest">
+              <span>Little Explorers Play & Games</span>
+              <span>🐘</span>
+            </div>
+            <p class="text-sm text-safari-olive mt-1">
+              Fun games for the little cubs and grown-up explorers, a musical animal parade, and the program hosted for our tribe.
+            </p>
+          </div>
+        </div>
+
+        <!-- Step 5 -->
+        <div class="relative pl-6 sm:pl-8 group reveal reveal-left">
+          <div class="absolute -left-[17px] top-1 w-8 h-8 rounded-full bg-safari-deepDark text-safari-goldLight border-4 border-safari-parchment flex items-center justify-center text-xs shadow">
+            5
+          </div>
+          <div class="sm:absolute sm:-left-32 sm:top-1 sm:text-right sm:w-24 text-xs font-bold uppercase tracking-wider text-safari-moss mb-1 sm:mb-0">
+            2:45 PM
+          </div>
+          <div class="bg-white p-5 rounded-2xl border border-safari-sage/30 shadow-sm transition-all group-hover:border-safari-sage group-hover:shadow-md group-hover:-translate-y-0.5">
+            <div class="flex items-center gap-2 font-serif font-bold text-lg text-safari-forest">
+              <span>Feast of the Savanna</span>
+              <span>🍉</span>
+            </div>
+            <p class="text-sm text-safari-olive mt-1">
+              Time to refuel! Enjoy a hearty spread of jungle treats, fresh fruits, and kid-friendly snacks.
+            </p>
+          </div>
+        </div>
+
+        <!-- Step 6 -->
+        <div class="relative pl-6 sm:pl-8 group reveal reveal-left">
+          <div class="absolute -left-[17px] top-1 w-8 h-8 rounded-full bg-safari-forest text-safari-goldLight border-4 border-safari-parchment flex items-center justify-center text-xs shadow">
+            6
+          </div>
+          <div class="sm:absolute sm:-left-32 sm:top-1 sm:text-right sm:w-24 text-xs font-bold uppercase tracking-wider text-safari-moss mb-1 sm:mb-0">
+            3:45 PM
+          </div>
+          <div class="bg-white p-5 rounded-2xl border border-safari-sage/30 shadow-sm transition-all group-hover:border-safari-sage group-hover:shadow-md group-hover:-translate-y-0.5">
+            <div class="flex items-center gap-2 font-serif font-bold text-lg text-safari-forest">
+              <span>Terrence's Cake & Birthday Wishes</span>
+              <span>🎂</span>
+            </div>
+            <p class="text-sm text-safari-olive mt-1">
+              Singing happy first birthday, blowing the candle, making wishes, and a special toast from the proud parents.
+            </p>
+          </div>
+        </div>
+
+        <!-- Step 7 -->
+        <div class="relative pl-6 sm:pl-8 group reveal reveal-left">
+          <div class="absolute -left-[17px] top-1 w-8 h-8 rounded-full bg-safari-moss text-safari-goldLight border-4 border-safari-parchment flex items-center justify-center text-xs shadow">
+            7
+          </div>
+          <div class="sm:absolute sm:-left-32 sm:top-1 sm:text-right sm:w-24 text-xs font-bold uppercase tracking-wider text-safari-moss mb-1 sm:mb-0">
+            4:30 PM
+          </div>
+          <div class="bg-white p-5 rounded-2xl border border-safari-sage/30 shadow-sm transition-all group-hover:border-safari-sage group-hover:shadow-md group-hover:-translate-y-0.5">
+            <div class="flex items-center gap-2 font-serif font-bold text-lg text-safari-forest">
+              <span>Sunset Favors & Wildlife Goodbyes</span>
+              <span>🎁</span>
+            </div>
+            <p class="text-sm text-safari-olive mt-1">
+              Take-home safari souvenirs and sweet appreciation tokens for our tribe. Thank you for celebrating with us!
+            </p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <section id="milestones" class="py-16 bg-safari-sand/60 border-y border-safari-sage/20">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6">
+        <div class="flex flex-col sm:flex-row sm:items-end justify-between mb-10">
+          <div>
+            <span class="text-xs uppercase tracking-widest text-safari-moss font-bold">Memories & Milestones</span>
+            <h2 class="font-serif font-black text-3xl sm:text-4xl text-safari-forest mt-1">12 Months of Terrence's Expedition</h2>
+            <p class="text-safari-olive/80 text-sm mt-1 max-w-lg">Tap any memory card to see his adorable photo up close!</p>
+          </div>
+          <!-- Filter / View Modes -->
+          <div class="mt-4 sm:mt-0 flex gap-2">
+            <span class="inline-flex items-center px-3 py-1 rounded-full bg-safari-moss/10 text-safari-moss text-xs font-bold">
+              🐾 12 Wild Months
+            </span>
+            <span class="inline-flex items-center px-3 py-1 rounded-full bg-safari-gold/20 text-amber-900 text-xs font-bold">
+              ⭐ 365 Days of Joy
+            </span>
+          </div>
+        </div>
+
+        <!-- Milestones Grid -->
+        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6" id="milestonesContainer">
+          <!-- Populated by JavaScript -->
+        </div>
+      </div>
+    </section>
+
+    <section id="rsvp" class="py-16 px-4 sm:px-6 max-w-3xl mx-auto">
+      <div class="bg-white rounded-3xl p-6 sm:p-10 shadow-safari-card border border-safari-sage/40 relative overflow-hidden">
+        
+        <!-- Subtle leaf watermark in background -->
+        <div class="absolute -right-8 -bottom-8 w-40 h-40 text-safari-sage/15 pointer-events-none">
+          <svg viewBox="0 0 100 100" fill="currentColor">
+            <path d="M50 0 C20 30 10 70 50 100 C90 70 80 30 50 0 Z" />
+          </svg>
+        </div>
+
+        <div class="text-center mb-8">
+          <div class="w-12 h-12 rounded-full bg-safari-sand text-safari-forest flex items-center justify-center mx-auto text-2xl mb-2">
+            💌
+          </div>
+          <span class="text-xs uppercase tracking-widest text-safari-terracotta font-bold">Join The Safari Troop</span>
+          <h2 class="font-serif font-black text-3xl sm:text-4xl text-safari-forest mt-1">RSVP to Terrence's Birthday</h2>
+          <p class="text-safari-olive/80 text-sm max-w-md mx-auto mt-2">
+            Kindly confirm your presence by <strong class="text-safari-forest">October 25, 2026</strong> so we can prepare enough rations & jungle treats!
+          </p>
+        </div>
+
+        <!-- RSVP Form -->
+        <form id="rsvpForm" onsubmit="handleRSVPSubmit(event)" class="space-y-5 relative z-10">
+          <!-- Honeypot (hidden from people, catches bots) -->
+          <input type="text" id="rsvpWebsite" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" class="absolute -left-[9999px] w-px h-px opacity-0" />
+
+          <!-- Attendance choice cards -->
+          <div>
+            <label class="block text-xs font-bold uppercase tracking-wider text-safari-deepDark mb-2">Are you venturing with us? *</label>
+            <div class="grid grid-cols-2 gap-3">
+              <label class="flex items-center gap-3 p-3.5 rounded-2xl border-2 cursor-pointer transition-all has-[:checked]:border-safari-forest has-[:checked]:bg-safari-sand/70 border-safari-sage/30 hover:border-safari-sage">
+                <input type="radio" name="attendingStatus" value="yes" checked class="accent-safari-forest w-4 h-4" />
+                <div>
+                  <div class="text-sm font-bold text-safari-deepDark">Yes! We're In 🦁</div>
+                  <div class="text-[11px] text-safari-olive">Ready for safari fun!</div>
+                </div>
+              </label>
+
+              <label class="flex items-center gap-3 p-3.5 rounded-2xl border-2 cursor-pointer transition-all has-[:checked]:border-safari-terracotta has-[:checked]:bg-red-50/50 border-safari-sage/30 hover:border-safari-sage">
+                <input type="radio" name="attendingStatus" value="no" class="accent-safari-terracotta w-4 h-4" />
+                <div>
+                  <div class="text-sm font-bold text-safari-deepDark">Regretfully Declines 🌿</div>
+                  <div class="text-[11px] text-safari-olive">Sending wild love from afar</div>
+                </div>
+              </label>
+            </div>
+          </div>
+
+          <!-- Guest Name & Email -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label for="guestName" class="block text-xs font-bold uppercase tracking-wider text-safari-deepDark mb-1">Your Full Name *</label>
+              <input 
+                type="text" 
+                id="guestName" 
+                required 
+                placeholder="e.g. Ninang Maria Santos" 
+                class="w-full px-4 py-3 rounded-xl bg-safari-parchment/60 border border-safari-sage/40 text-sm text-safari-deepDark placeholder:text-safari-olive/50 focus:outline-none focus:ring-2 focus:ring-safari-moss transition-all"
+              />
+            </div>
+            <div>
+              <label for="guestEmail" class="block text-xs font-bold uppercase tracking-wider text-safari-deepDark mb-1">Email / Phone *</label>
+              <input 
+                type="text" 
+                id="guestEmail" 
+                required 
+                placeholder="09XX XXX XXXX or name@email.com" 
+                class="w-full px-4 py-3 rounded-xl bg-safari-parchment/60 border border-safari-sage/40 text-sm text-safari-deepDark placeholder:text-safari-olive/50 focus:outline-none focus:ring-2 focus:ring-safari-moss transition-all"
+              />
+            </div>
+          </div>
+
+          <!-- Headcount Selectors -->
+          <div id="attendeeNumbersSection" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label for="adultsCount" class="block text-xs font-bold uppercase tracking-wider text-safari-deepDark mb-1">Number of Adults</label>
+              <select id="adultsCount" class="w-full px-4 py-3 rounded-xl bg-safari-parchment/60 border border-safari-sage/40 text-sm text-safari-deepDark focus:outline-none focus:ring-2 focus:ring-safari-moss transition-all">
+                <option value="1">1 Adult Explorer</option>
+                <option value="2" selected>2 Adult Explorers</option>
+                <option value="3">3 Adult Explorers</option>
+                <option value="4">4+ Adult Explorers</option>
+              </select>
+            </div>
+            <div>
+              <label for="kidsCount" class="block text-xs font-bold uppercase tracking-wider text-safari-deepDark mb-1">Number of Kids (Cubs)</label>
+              <select id="kidsCount" class="w-full px-4 py-3 rounded-xl bg-safari-parchment/60 border border-safari-sage/40 text-sm text-safari-deepDark focus:outline-none focus:ring-2 focus:ring-safari-moss transition-all">
+                <option value="0">0 Kids</option>
+                <option value="1" selected>1 Little Explorer</option>
+                <option value="2">2 Little Explorers</option>
+                <option value="3">3+ Little Explorers</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Dietary Restrictions -->
+          <div>
+            <label for="dietaryNotes" class="block text-xs font-bold uppercase tracking-wider text-safari-deepDark mb-1">Dietary Preferences or Allergies</label>
+            <input 
+              type="text" 
+              id="dietaryNotes" 
+              placeholder="e.g. Vegetarian, Nut Allergy, Gluten-free, none" 
+              class="w-full px-4 py-3 rounded-xl bg-safari-parchment/60 border border-safari-sage/40 text-sm text-safari-deepDark placeholder:text-safari-olive/50 focus:outline-none focus:ring-2 focus:ring-safari-moss transition-all"
+            />
+          </div>
+
+          <!-- Wish or Song Request -->
+          <div>
+            <label for="guestNote" class="block text-xs font-bold uppercase tracking-wider text-safari-deepDark mb-1">Special Wish for Baby Terrence or Song Request</label>
+            <textarea 
+              id="guestNote" 
+              rows="3" 
+              placeholder="Leave a sweet note for the 1st birthday scrapbook or request a playlist tune..." 
+              class="w-full px-4 py-3 rounded-xl bg-safari-parchment/60 border border-safari-sage/40 text-sm text-safari-deepDark placeholder:text-safari-olive/50 focus:outline-none focus:ring-2 focus:ring-safari-moss transition-all"
+            ></textarea>
+          </div>
+
+          <!-- Submit Button -->
+          <div class="pt-3">
+            <button 
+              type="submit" 
+              id="rsvpSubmitBtn"
+              class="w-full py-4 rounded-2xl bg-safari-forest hover:bg-safari-deepDark text-safari-goldLight font-bold text-base shadow-lg hover:shadow-xl transition-all flex items-center justify-center gap-2 group"
+            >
+              <span>Submit Safari RSVP</span>
+              <span class="group-hover:scale-125 transition-transform">🐾</span>
+            </button>
+          </div>
+
+        </form>
+
+        <!-- Current RSVP summary badge counter -->
+        <div class="mt-8 pt-6 border-t border-safari-sage/30 flex flex-wrap items-center justify-between gap-3 text-xs text-safari-olive font-medium">
+          <div class="flex items-center gap-2">
+            <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+            <span id="confirmedCountLabel">0 Explorers currently registered</span>
+          </div>
+          <button onclick="toggleGuestListModal()" class="text-safari-terracotta hover:underline font-bold flex items-center gap-1">
+            <span>View Guest List</span>
+            <span>📖</span>
+          </button>
+        </div>
+
+      </div>
+    </section>
+
+    <section id="details" class="py-16 bg-safari-sand/50 border-y border-safari-sage/20">
+      <div class="max-w-5xl mx-auto px-4 sm:px-6">
+        <div class="text-center mb-10 reveal">
+          <span class="text-xs uppercase tracking-widest text-safari-moss font-bold">Expedition Headquarters</span>
+          <h2 class="font-serif font-black text-3xl sm:text-4xl text-safari-forest mt-1">Location & Safari Basecamp</h2>
+          <p class="text-safari-olive/80 text-sm max-w-md mx-auto mt-2">Sunday, November 8, 2026 &mdash; two stops on our safari trail. Tap a map button to navigate.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-stretch">
+
+          <!-- Venue Details Card -->
+          <div class="bg-white p-6 sm:p-8 rounded-3xl border border-safari-sage/30 shadow-sm flex flex-col justify-between reveal reveal-left">
+            <div class="space-y-6">
+
+              <!-- Church -->
+              <div>
+                <div class="flex items-center justify-between mb-3 gap-2">
+                  <span class="px-3 py-1 rounded-full bg-safari-sand text-safari-forest text-xs font-bold uppercase tracking-wider">Stop 1 &bull; Holy Mass</span>
+                  <span class="text-sm font-semibold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-full whitespace-nowrap">11:30 AM</span>
+                </div>
+                <h3 class="font-serif font-bold text-xl text-safari-forest mb-1">Minor Basilica and Parish of Our Lady of the Most Holy Rosary</h3>
+                <p class="text-sm text-safari-olive mb-3">Sto. Rosario St., Angeles City, Pampanga</p>
+                <a href="https://maps.app.goo.gl/PDhFFhhoCBcRt5RR6" target="_blank" rel="noopener" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-safari-forest text-white text-xs sm:text-sm font-bold shadow hover:bg-safari-deepDark transition-all active:scale-95">
+                  <span>Open Church in Google Maps</span><span>🗺️</span>
+                </a>
+              </div>
+
+              <div class="border-t border-dashed border-safari-sage/50"></div>
+
+              <!-- Reception -->
+              <div>
+                <div class="flex items-center justify-between mb-3 gap-2">
+                  <span class="px-3 py-1 rounded-full bg-safari-sand text-safari-forest text-xs font-bold uppercase tracking-wider">Stop 2 &bull; Reception</span>
+                  <span class="text-sm font-semibold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-full whitespace-nowrap">1:00 PM</span>
+                </div>
+                <h3 class="font-serif font-bold text-xl text-safari-forest mb-1">CC Resort</h3>
+                <p class="text-sm text-safari-olive mb-3">Porac, Pampanga</p>
+                <a href="https://maps.app.goo.gl/UqnFvJmzeMCuFmbi6" target="_blank" rel="noopener" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-safari-forest text-white text-xs sm:text-sm font-bold shadow hover:bg-safari-deepDark transition-all active:scale-95">
+                  <span>Open Resort in Google Maps</span><span>🗺️</span>
+                </a>
+              </div>
+
+              <!-- Helpful Tips Checklist -->
+              <div class="space-y-3 text-xs sm:text-sm text-safari-olive/90 pt-2">
+                <div class="flex items-start gap-3">
+                  <span class="text-lg">🚙</span>
+                  <span><strong>Travel Time:</strong> Allow time to drive from Angeles City to Porac after the Mass. We start the reception at 1:00 PM sharp!</span>
+                </div>
+                <div class="flex items-start gap-3">
+                  <span class="text-lg">👒</span>
+                  <span><strong>Dress Code:</strong> Safari chic &mdash; khaki, earth tones and animal prints.</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="mt-8 pt-6 border-t border-safari-sage/20 flex flex-wrap gap-3">
+              <button onclick="copyVenueAddress('church')" class="flex-1 py-3 px-4 rounded-xl bg-safari-parchment text-safari-forest border border-safari-sage/40 hover:bg-safari-sage/20 text-xs sm:text-sm font-semibold transition-all flex items-center justify-center gap-1.5">
+                <span id="copyChurchLabel">Copy Church Address</span><span>📋</span>
+              </button>
+              <button onclick="copyVenueAddress('resort')" class="flex-1 py-3 px-4 rounded-xl bg-safari-parchment text-safari-forest border border-safari-sage/40 hover:bg-safari-sage/20 text-xs sm:text-sm font-semibold transition-all flex items-center justify-center gap-1.5">
+                <span id="copyResortLabel">Copy Resort Address</span><span>📋</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Stylized Map Frame -->
+          <div class="relative rounded-3xl overflow-hidden border border-safari-sage/30 shadow-sm min-h-[420px] bg-gradient-to-br from-safari-forest via-safari-olive to-safari-moss flex flex-col items-center justify-center p-6 text-center group reveal reveal-right">
+            <div class="absolute inset-0 opacity-20" style="background-image: radial-gradient(#F3E5AB 1px, transparent 1px); background-size: 22px 22px;"></div>
+            <div class="absolute inset-x-0 top-0 h-2/3 bg-gradient-to-b from-safari-gold/20 to-transparent"></div>
+
+            <div class="jeep-in reveal relative flex justify-center mb-4">
+              <img src="img/photo-design.png" alt="Terrence driving his safari jeep" loading="lazy" class="w-48 sm:w-56 drop-shadow-2xl animate-float-slow" />
+            </div>
+
+            <div class="relative z-10 text-white max-w-xs">
+              <h4 class="font-serif font-bold text-xl text-safari-goldLight">Follow the Safari Trail</h4>
+              <p class="text-xs text-safari-sand/80 mt-1 mb-4">Angeles City &rarr; Porac, Pampanga. Terrence can't wait to see you!</p>
+              <div class="flex flex-col sm:flex-row gap-2 justify-center">
+                <a href="https://maps.app.goo.gl/PDhFFhhoCBcRt5RR6" target="_blank" rel="noopener" class="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-full bg-safari-gold text-safari-deepDark font-bold text-xs uppercase tracking-wider hover:bg-yellow-300 transition-colors shadow-md active:scale-95">
+                  <span>Church</span><span>⛪</span>
+                </a>
+                <a href="https://maps.app.goo.gl/UqnFvJmzeMCuFmbi6" target="_blank" rel="noopener" class="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-full bg-safari-gold text-safari-deepDark font-bold text-xs uppercase tracking-wider hover:bg-yellow-300 transition-colors shadow-md active:scale-95">
+                  <span>Reception</span><span>🧭</span>
+                </a>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <section id="registry" class="py-16 px-4 sm:px-6 max-w-4xl mx-auto text-center">
+      <span class="text-xs uppercase tracking-widest text-safari-terracotta font-bold reveal">Little Explorer Wishing Well</span>
+      <h2 class="font-serif font-black text-3xl sm:text-4xl text-safari-forest mt-1 reveal">Registry & Gift Ideas</h2>
+      <p class="text-safari-olive/80 text-sm max-w-lg mx-auto mt-2 reveal">
+        Your presence and warm hugs are our greatest treasure! If you wish to bless Terrence with a gift, here are the things he needs most:
+      </p>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-5 mt-10">
+        <!-- Option 1: Baby Essentials -->
+        <div class="bg-white p-6 rounded-3xl border border-safari-sage/30 shadow-sm hover:border-safari-moss hover:shadow-md transition-all text-left group reveal">
+          <div class="w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-800 flex items-center justify-center text-2xl mb-4 group-hover:scale-110 transition-transform">
+            🍼
+          </div>
+          <h3 class="font-serif font-bold text-lg text-safari-forest">Baby Essentials</h3>
+          <p class="text-xs text-safari-olive mt-1.5 mb-5">
+            Diapers, wet wipes, baby milk, baby wash & lotion, and everyday clothes for his growing wild days.
+          </p>
+          <button onclick="showRegistryModal()" class="text-xs font-bold text-safari-moss group-hover:text-safari-terracotta transition-colors flex items-center gap-1">
+            <span>See Essentials List</span>
+            <span>&rarr;</span>
+          </button>
+        </div>
+
+        <!-- Option 2: Future Explorer Fund -->
+        <div class="bg-white p-6 rounded-3xl border border-safari-sage/30 shadow-sm hover:border-safari-moss hover:shadow-md transition-all text-left group reveal" style="--d:.15s">
+          <div class="w-12 h-12 rounded-2xl bg-orange-50 text-orange-800 flex items-center justify-center text-2xl mb-4 group-hover:scale-110 transition-transform">
+            🌱
+          </div>
+          <h3 class="font-serif font-bold text-lg text-safari-forest">Future Explorer Fund</h3>
+          <p class="text-xs text-safari-olive mt-1.5 mb-5">
+            Contribute toward Terrence's future &mdash; his education and the adventures still waiting for him.
+          </p>
+          <button onclick="showFundModal()" class="text-xs font-bold text-safari-moss group-hover:text-safari-terracotta transition-colors flex items-center gap-1">
+            <span>View Fund Info</span>
+            <span>&rarr;</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <section id="guestbook" class="py-16 bg-safari-sand/60 border-t border-safari-sage/20">
+      <div class="max-w-4xl mx-auto px-4 sm:px-6">
+        <div class="text-center mb-10">
+          <span class="text-xs uppercase tracking-widest text-safari-moss font-bold">Wild Scrapbook</span>
+          <h2 class="font-serif font-black text-3xl sm:text-4xl text-safari-forest mt-1">Safari Wishes for Terrence</h2>
+          <p class="text-safari-olive/80 text-sm max-w-md mx-auto mt-2">
+            Leave warm birthday blessings, humorous survival advice for the parents, or animal wishes!
+          </p>
+        </div>
+
+        <!-- Add Wish Box -->
+        <div class="bg-white p-5 sm:p-6 rounded-3xl border border-safari-sage/30 shadow-sm mb-8">
+          <form id="wishForm" onsubmit="handleWishSubmit(event)" class="space-y-4">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <input 
+                type="text" 
+                id="wishAuthor" 
+                required 
+                placeholder="Your Name (e.g. Uncle Noah)" 
+                class="px-4 py-2.5 rounded-xl bg-safari-parchment/60 border border-safari-sage/40 text-sm focus:outline-none focus:ring-2 focus:ring-safari-moss"
+              />
+              <!-- Select Safari Avatar -->
+              <select id="wishAvatar" class="px-4 py-2.5 rounded-xl bg-safari-parchment/60 border border-safari-sage/40 text-sm focus:outline-none focus:ring-2 focus:ring-safari-moss">
+                <option value="🦁">🦁 Brave Lion</option>
+                <option value="🦒">🦒 Gentle Giraffe</option>
+                <option value="🐘">🐘 Wise Elephant</option>
+                <option value="🐒">🐒 Playful Monkey</option>
+                <option value="🦓">🦓 Speedy Zebra</option>
+                <option value="🦛">🦛 Happy Hippo</option>
+              </select>
+            </div>
+
+            <textarea 
+              id="wishMessage" 
+              required 
+              rows="2" 
+              placeholder="Write your wild wish for Terrence..." 
+              class="w-full px-4 py-2.5 rounded-xl bg-safari-parchment/60 border border-safari-sage/40 text-sm focus:outline-none focus:ring-2 focus:ring-safari-moss"
+            ></textarea>
+
+            <div class="flex justify-end">
+              <button 
+                type="submit" 
+                class="px-5 py-2 rounded-full bg-safari-forest text-safari-sand text-xs sm:text-sm font-bold hover:bg-safari-deepDark transition-all flex items-center gap-1.5 shadow"
+              >
+                <span>Post Birthday Wish</span>
+                <span>✨</span>
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Live Wishes Grid -->
+        <div id="wishesGrid" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <!-- Populated by JavaScript -->
+        </div>
+
+      </div>
+    </section>
+
+    <section class="py-12 px-4 sm:px-6 max-w-3xl mx-auto text-center">
+      <div class="bg-gradient-to-br from-safari-forest to-safari-moss text-white rounded-3xl p-6 sm:p-8 shadow-xl relative overflow-hidden">
+        <span class="text-xs uppercase tracking-widest text-safari-goldLight font-bold">Party Interactive</span>
+        <h3 class="font-serif font-black text-2xl sm:text-3xl mt-1 mb-2">Safari Soundboard & Roar Meter</h3>
+        <p class="text-xs sm:text-sm text-safari-sand/80 max-w-md mx-auto mb-6">
+          Tap the animal buttons to trigger playful party notes and jungle sounds!
+        </p>
+
+        <div class="flex flex-wrap items-center justify-center gap-3">
+          <button onclick="playSafariSound('lion')" class="px-4 py-2.5 rounded-2xl bg-white/15 hover:bg-white/25 backdrop-blur-sm border border-white/20 text-sm font-semibold transition-transform active:scale-95 flex items-center gap-2">
+            <span class="text-xl">🦁</span>
+            <span>Lion Roar Chord</span>
+          </button>
+
+          <button onclick="playSafariSound('elephant')" class="px-4 py-2.5 rounded-2xl bg-white/15 hover:bg-white/25 backdrop-blur-sm border border-white/20 text-sm font-semibold transition-transform active:scale-95 flex items-center gap-2">
+            <span class="text-xl">🐘</span>
+            <span>Elephant Trumpet</span>
+          </button>
+
+          <button onclick="playSafariSound('monkey')" class="px-4 py-2.5 rounded-2xl bg-white/15 hover:bg-white/25 backdrop-blur-sm border border-white/20 text-sm font-semibold transition-transform active:scale-95 flex items-center gap-2">
+            <span class="text-xl">🐒</span>
+            <span>Jungle Marimba</span>
+          </button>
+
+          <button onclick="playSafariSound('birthday')" class="px-4 py-2.5 rounded-2xl bg-safari-gold text-safari-deepDark font-bold hover:bg-yellow-300 text-sm transition-transform active:scale-95 flex items-center gap-2 shadow-lg">
+            <span class="text-xl">🎂</span>
+            <span>Happy Birthday Tune</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="bg-safari-forest text-safari-sand py-12 px-4 sm:px-6 border-t border-safari-gold/30">
+    <div class="max-w-4xl mx-auto text-center space-y-6">
+      <div class="flex items-center justify-center gap-3">
+        <span class="text-2xl">🦁</span>
+        <span class="font-serif font-extrabold text-xl sm:text-2xl tracking-tight text-safari-goldLight">Terrence is Wild One</span>
+        <span class="text-2xl">🦒</span>
+      </div>
+
+      <p class="text-xs sm:text-sm text-safari-sage max-w-md mx-auto">
+        Thank you for being part of our pride and celebrating Terrence's first year of wild adventures. We can't wait to see you!
+      </p>
+
+      <div class="flex items-center justify-center gap-4 text-xs font-semibold text-safari-goldLight/90">
+        <a href="#hero" class="hover:underline">Back to Top</a>
+        <span>•</span>
+        <a href="#rsvp" class="hover:underline">RSVP</a>
+        <span>•</span>
+        <button onclick="openHostDashboard()" class="hover:underline text-safari-goldLight flex items-center gap-1">
+          <span>Host Dashboard</span>
+          <span>🔑</span>
+        </button>
+      </div>
+
+      <p class="text-[11px] text-safari-sage/60 pt-4 border-t border-safari-moss/40">
+        Wild One Safari 1st Birthday Digital Invitation. Crafted with joy and celebration.
+      </p>
+      <p class="text-xs sm:text-sm font-semibold text-safari-goldLight">
+        <span class="font-script text-lg sm:text-xl">Ninong Beans Creation 2026</span>
+        <span class="text-safari-sage/70 mx-1">-</span>
+        <span>Full Stack Web Developer</span>
+      </p>
+    </div>
+  </footer>
+
+  
+  <!-- Guest List Modal -->
+  <div id="guestListModal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-lg w-full p-6 shadow-2xl max-h-[85vh] flex flex-col">
+      <div class="flex items-center justify-between pb-4 border-b border-safari-sage/30">
+        <div class="flex items-center gap-2">
+          <span class="text-2xl">🐾</span>
+          <h3 id="guestListTitle" class="font-serif font-bold text-xl text-safari-forest">Confirmed Safari Explorers</h3>
+        </div>
+        <button onclick="toggleGuestListModal()" aria-label="Close" class="w-8 h-8 rounded-full bg-safari-parchment hover:bg-safari-sand flex items-center justify-center text-sm font-bold text-safari-deepDark">✕</button>
+      </div>
+
+      <div id="guestListContainer" class="py-4 overflow-y-auto space-y-2.5 flex-1 pr-1">
+        <!-- Injected via JS -->
+      </div>
+
+      <div class="pt-4 border-t border-safari-sage/30 flex items-center justify-between gap-2 text-xs text-safari-olive font-medium">
+        <span id="modalTotalGuests">Total: 0 Guests</span>
+        <div class="flex items-center gap-2">
+          <button id="guestListAdminBtn" onclick="openHostDashboard()" class="px-3 py-2 rounded-full border border-safari-sage/50 text-safari-forest font-semibold text-xs hover:bg-safari-sand">🔑 Admin</button>
+          <button onclick="toggleGuestListModal()" class="px-4 py-2 rounded-full bg-safari-forest text-white font-bold text-xs">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Admin Login Modal -->
+  <div id="adminLoginModal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden items-center justify-center p-4">
+    <form onsubmit="handleAdminLogin(event)" class="bg-white rounded-3xl max-w-sm w-full p-6 shadow-2xl">
+      <div class="flex items-center justify-between pb-3 border-b border-safari-sage/30">
+        <div class="flex items-center gap-2">
+          <span class="text-xl">🔑</span>
+          <h3 class="font-serif font-bold text-lg text-safari-forest">Host Login</h3>
+        </div>
+        <button type="button" onclick="closeAdminLogin()" aria-label="Close" class="w-8 h-8 rounded-full bg-safari-parchment hover:bg-safari-sand flex items-center justify-center text-sm font-bold text-safari-deepDark">✕</button>
+      </div>
+      <div class="py-4 space-y-3">
+        <p class="text-xs text-safari-olive">Sign in to view the full details of every RSVP.</p>
+        <input id="adminUser" type="text" required autocomplete="username" autocapitalize="none" placeholder="Username" class="w-full px-4 py-3 rounded-xl bg-safari-parchment/60 border border-safari-sage/40 text-sm focus:outline-none focus:ring-2 focus:ring-safari-moss" />
+        <input id="adminPass" type="password" required autocomplete="current-password" placeholder="Password" class="w-full px-4 py-3 rounded-xl bg-safari-parchment/60 border border-safari-sage/40 text-sm focus:outline-none focus:ring-2 focus:ring-safari-moss" />
+        <p id="adminLoginError" class="text-xs font-semibold text-safari-terracotta hidden"></p>
+        <button id="adminLoginBtn" type="submit" class="w-full py-3 rounded-xl bg-safari-forest text-safari-goldLight font-bold text-sm hover:bg-safari-deepDark transition-all">Sign In</button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Host Admin Modal -->
+  <div id="hostAdminModal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl">
+      <div class="flex items-center justify-between pb-3 border-b border-safari-sage/30">
+        <div class="flex items-center gap-2">
+          <span class="text-xl">🛠️</span>
+          <h3 class="font-serif font-bold text-lg text-safari-forest">Host Control Panel</h3>
+        </div>
+        <button onclick="toggleHostAdminModal()" aria-label="Close" class="w-8 h-8 rounded-full bg-safari-parchment hover:bg-safari-sand flex items-center justify-center text-sm font-bold text-safari-deepDark">✕</button>
+      </div>
+
+      <div class="py-4 space-y-4 text-xs sm:text-sm text-safari-olive">
+        <p>You're signed in. Open the guest list for full RSVP details or download them as a spreadsheet.</p>
+        
+        <div class="bg-safari-sand p-3.5 rounded-2xl space-y-1">
+          <div class="flex justify-between font-bold text-safari-deepDark">
+            <span>Attending Adults:</span>
+            <span id="adminAdultsCount">0</span>
+          </div>
+          <div class="flex justify-between font-bold text-safari-deepDark">
+            <span>Attending Cubs (Kids):</span>
+            <span id="adminKidsCount">0</span>
+          </div>
+          <div class="flex justify-between text-safari-terracotta font-bold">
+            <span>Declined:</span>
+            <span id="adminDeclinedCount">0</span>
+          </div>
+        </div>
+
+        <div class="space-y-2 pt-2">
+          <button onclick="toggleHostAdminModal(); toggleGuestListModal();" class="w-full py-2.5 rounded-xl bg-safari-forest text-white font-bold text-xs flex items-center justify-center gap-2">
+            <span>View Full Guest Details</span>
+            <span>📖</span>
+          </button>
+          <button onclick="exportRSVPToCSV()" class="w-full py-2.5 rounded-xl bg-safari-parchment border border-safari-sage/50 text-safari-forest font-bold text-xs hover:bg-safari-sand flex items-center justify-center gap-2">
+            <span>Download RSVPs as CSV</span>
+            <span>📊</span>
+          </button>
+          <button onclick="adminLogout()" class="w-full py-2.5 rounded-xl bg-safari-parchment border border-safari-sage/50 text-safari-olive font-semibold text-xs hover:bg-safari-sand">
+            Log out
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Info Modal (registry & fund) -->
+  <div id="infoModal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl max-h-[85vh] overflow-y-auto">
+      <div class="flex items-center justify-between pb-3 border-b border-safari-sage/30">
+        <div class="flex items-center gap-2">
+          <span id="infoModalIcon" class="text-2xl">🍼</span>
+          <h3 id="infoModalTitle" class="font-serif font-bold text-lg text-safari-forest">Baby Essentials</h3>
+        </div>
+        <button onclick="closeInfoModal()" aria-label="Close" class="w-8 h-8 rounded-full bg-safari-parchment hover:bg-safari-sand flex items-center justify-center text-sm font-bold text-safari-deepDark">✕</button>
+      </div>
+      <div id="infoModalBody" class="py-4 text-xs sm:text-sm text-safari-olive space-y-3"></div>
+      <button onclick="closeInfoModal()" class="w-full py-2.5 rounded-xl bg-safari-forest text-white font-bold text-xs">Close</button>
+    </div>
+  </div>
+
+  <!-- Milestone Lightbox Modal -->
+  <div id="milestoneModal" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-md hidden items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-sm sm:max-w-md w-full overflow-hidden shadow-2xl relative animate-float-slow">
+      <button onclick="closeMilestoneModal()" class="absolute top-3 right-3 z-10 w-9 h-9 rounded-full bg-black/50 text-white flex items-center justify-center text-sm font-bold hover:bg-black">✕</button>
+      <div class="h-64 sm:h-72 w-full overflow-hidden bg-safari-forest relative">
+        <img id="milestoneModalImg" src="" alt="Milestone" class="w-full h-full object-cover" style="object-position:center 30%" />
+      </div>
+      <div class="p-6">
+        <div class="flex items-center justify-between mb-2">
+          <span id="milestoneModalMonth" class="px-3 py-1 rounded-full bg-safari-gold/20 text-amber-900 text-xs font-bold uppercase tracking-wider">Month 1</span>
+          <span id="milestoneModalIcon" class="text-2xl">🦁</span>
+        </div>
+        <h4 id="milestoneModalTitle" class="font-serif font-black text-2xl text-safari-forest">First Sweet Smile</h4>
+        <p id="milestoneModalDesc" class="text-xs sm:text-sm text-safari-olive mt-2">
+          A sweet memory of our little explorer.
+        </p>
+        <div class="mt-4 pt-3 border-t border-safari-sage/30 flex justify-between text-xs text-safari-moss font-semibold">
+          <span id="milestoneModalWeight">Age: 1 month</span>
+          <span id="milestoneModalFave">Terrence Jae 🐾</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Custom Toast Notification System -->
+  <div id="toastContainer" class="fixed bottom-6 right-6 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+  <script>
+    /* Event: Sunday, November 8, 2026 - Holy Mass at 11:30 AM (Philippine Time) */
+    const EVENT_DATE = new Date('2026-11-08T11:30:00+08:00');
+
+    const VENUES = {
+      church: "Minor Basilica and Parish of Our Lady of the Most Holy Rosary, Sto. Rosario St., Angeles City, Pampanga",
+      resort: "CC Resort, Porac, Pampanga"
+    };
+
+    /* Fill these in with your real details to show them in the "Future Explorer Fund" popup */
+    const FUND_INFO = { gcash: '', bank: '' };
+
+    const STORAGE_KEY_RSVP = 'wild_one_rsvp_list';
+    const STORAGE_KEY_WISHES = 'wild_one_wishes_list';
+    const TOKEN_KEY = 'wild_one_admin_token';
+
+    /* Photos live in /img/web (optimised copies of the originals in /img) */
+    const MILESTONES = [
+      { label: "Newborn", age: "Newborn", title: "Hello, World!", icon: "🍼", img: "img/web/newborn.webp", pos: "50% 45%", desc: "The very first day of our greatest adventure." },
+      { label: "Month 1", age: "1 month", title: "Little Cub", icon: "🐾", img: "img/web/month-1.webp", pos: "50% 35%", desc: "One month of snuggles and sweet dreams." },
+      { label: "Month 2", age: "2 months", title: "Growing Strong", icon: "✨", img: "img/web/month-2.webp", pos: "50% 30%", desc: "Two months in and growing every single day." },
+      { label: "Month 3", age: "3 months", title: "Bright Eyes", icon: "🦁", img: "img/web/month-3.webp", pos: "50% 30%", desc: "Three months of wonder and curious little eyes." },
+      { label: "Month 4", age: "4 months", title: "Cuddle Season", icon: "🐒", img: "img/web/month-4.webp", pos: "50% 30%", desc: "Four months of giggles and big hugs." },
+      { label: "Month 5", age: "5 months", title: "Tiny Explorer", icon: "🦶", img: "img/web/month-5.webp", pos: "50% 30%", desc: "Exploring the world one tiny discovery at a time." },
+      { label: "Month 6", age: "6 months", title: "Half-Year Hero", icon: "👑", img: "img/web/month-6.webp", pos: "50% 30%", desc: "Halfway to one! Six months of pure joy." },
+      { label: "Month 7", age: "7 months", title: "Curious Cub", icon: "🦒", img: "img/web/month-7.webp", pos: "50% 30%", desc: "Seven months of curiosity and new adventures." },
+      { label: "Month 8", age: "8 months", title: "Adventure Awaits", icon: "🐆", img: "img/web/month-8.webp", pos: "50% 30%", desc: "Eight months and every day brings something new." },
+      { label: "Month 9", age: "9 months", title: "Little Trailblazer", icon: "🦷", img: "img/web/month-9.webp", pos: "50% 30%", desc: "Nine months of growing bolder and brighter." },
+      { label: "Month 10", age: "10 months", title: "Almost a Wild One", icon: "🐘", img: "img/web/month-10.webp", pos: "50% 30%", desc: "Ten months! The wild one is almost here." },
+      { label: "Month 11", age: "11 months", title: "One Month to Go!", icon: "🎂", img: "img/web/month-11.webp", pos: "50% 30%", desc: "Eleven months down, one big birthday to go!" }
+    ];
+
+    const isDev = location.protocol === 'file:' || ['localhost', '127.0.0.1'].includes(location.hostname);
+
+    /* ---------------- Helpers ---------------- */
+    function esc(v) {
+      return String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+    }
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const $ = id => document.getElementById(id);
+    const openModal = id => { $(id).classList.remove('hidden'); $(id).classList.add('flex'); };
+    const closeModal = id => { $(id).classList.add('hidden'); $(id).classList.remove('flex'); };
+
+    async function api(path, opts = {}) {
+      const res = await fetch(path, opts);
+      let data = {};
+      try { data = await res.json(); } catch (e) { /* non-JSON response */ }
+      if (!res.ok) {
+        const err = new Error(data.error || 'Request failed');
+        err.status = res.status;
+        throw err;
+      }
+      return data;
+    }
+    /* Local fallback is only used when previewing the file on your own computer */
+    const canFallback = err => isDev && (!err.status || err.status === 404 || err.status === 503);
+
+    /* ---------------- Countdown ---------------- */
+    let lastSecond = null;
+    function updateCountdown() {
+      const diff = Math.max(EVENT_DATE - new Date(), 0);
+      const days = Math.floor(diff / 86400000);
+      const hours = Math.floor((diff % 86400000) / 3600000);
+      const minutes = Math.floor((diff % 3600000) / 60000);
+      const seconds = Math.floor((diff % 60000) / 1000);
+      $('countdownDays').innerText = String(days).padStart(2, '0');
+      $('countdownHours').innerText = String(hours).padStart(2, '0');
+      $('countdownMinutes').innerText = String(minutes).padStart(2, '0');
+      const s = $('countdownSeconds');
+      s.innerText = String(seconds).padStart(2, '0');
+      if (lastSecond !== seconds && !reduceMotion) {
+        s.classList.remove('tick'); void s.offsetWidth; s.classList.add('tick');
+      }
+      lastSecond = seconds;
+    }
+
+    /* ---------------- Milestones ---------------- */
+    function renderMilestones() {
+      const container = $('milestonesContainer');
+      container.innerHTML = MILESTONES.map((m, idx) => `
+        <div onclick="openMilestoneModal(${idx})" style="--d:${(idx % 4) * 0.08}s" class="reveal group cursor-pointer bg-white rounded-2xl overflow-hidden border border-safari-sage/30 shadow-sm hover:shadow-md hover:border-safari-gold transition-all duration-300 hover:-translate-y-1 active:scale-95">
+          <div class="relative h-40 sm:h-48 bg-safari-parchment overflow-hidden">
+            <img src="${m.img}" alt="${esc(m.title)} - ${esc(m.label)}" loading="lazy"
+              class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" style="object-position:${m.pos}" />
+            <div class="absolute top-2 left-2 px-2.5 py-0.5 rounded-full bg-safari-forest/80 backdrop-blur-sm text-safari-goldLight text-[11px] font-bold">${esc(m.label)}</div>
+            <div class="absolute bottom-2 right-2 text-xl filter drop-shadow">${m.icon}</div>
+          </div>
+          <div class="p-3 sm:p-4">
+            <h4 class="font-serif font-bold text-sm sm:text-base text-safari-forest group-hover:text-safari-terracotta transition-colors line-clamp-1">${esc(m.title)}</h4>
+            <p class="text-[11px] text-safari-olive/80 line-clamp-1 mt-0.5">${esc(m.desc)}</p>
+          </div>
+        </div>`).join('');
+      observeReveals(container);
+    }
+
+    function openMilestoneModal(index) {
+      const item = MILESTONES[index];
+      if (!item) return;
+      const img = $('milestoneModalImg');
+      img.src = item.img;
+      img.style.objectPosition = item.pos;
+      $('milestoneModalMonth').innerText = item.label;
+      $('milestoneModalIcon').innerText = item.icon;
+      $('milestoneModalTitle').innerText = item.title;
+      $('milestoneModalDesc').innerText = item.desc;
+      $('milestoneModalWeight').innerText = `Age: ${item.age}`;
+      $('milestoneModalFave').innerText = 'Terrence Jae 🐾';
+      openModal('milestoneModal');
+    }
+    function closeMilestoneModal() { closeModal('milestoneModal'); }
+
+    /* ---------------- RSVP data ---------------- */
+    let guests = [];                     // public view: {name, status}
+    let totals = { adults: 0, kids: 0, explorers: 0, declined: 0 };
+    let adminRsvps = [];                 // admin view: full details
+    const getToken = () => sessionStorage.getItem(TOKEN_KEY);
+
+    function localRsvps() {
+      try { return JSON.parse(localStorage.getItem(STORAGE_KEY_RSVP)) || []; } catch (e) { return []; }
+    }
+    function computeTotals(list) {
+      const t = { adults: 0, kids: 0, explorers: 0, declined: 0 };
+      list.forEach(r => {
+        if (r.status === 'yes') { t.adults += Number(r.adults) || 0; t.kids += Number(r.kids) || 0; } else { t.declined++; }
+      });
+      t.explorers = t.adults + t.kids;
+      return t;
+    }
+
+    async function loadRsvps() {
+      try {
+        const data = await api('/api/rsvp');
+        guests = data.guests; totals = data.totals;
+      } catch (err) {
+        if (!canFallback(err)) { if (!guests.length) showToast("Couldn't load the guest list right now.", "warning"); return; }
+        const list = localRsvps();
+        guests = list.map(r => ({ name: r.name, status: r.status }));
+        totals = computeTotals(list);
+        adminRsvps = list;
+      }
+      updateRSVPStats();
+    }
+
+    async function loadAdminRsvps() {
+      try {
+        const data = await api('/api/admin', { headers: { Authorization: `Bearer ${getToken()}` } });
+        adminRsvps = data.rsvps;
+      } catch (err) {
+        if (err.status === 401) { adminLogout(true); showToast("Session expired. Please log in again.", "warning"); return false; }
+        if (!canFallback(err)) { showToast("Couldn't load RSVP details.", "warning"); return false; }
+      }
+      return true;
+    }
+
+    function updateRSVPStats() {
+      $('confirmedCountLabel').innerText = `${totals.explorers} Explorers currently registered`;
+      $('adminAdultsCount').innerText = totals.adults;
+      $('adminKidsCount').innerText = totals.kids;
+      $('adminDeclinedCount').innerText = totals.declined;
+      $('modalTotalGuests').innerText = `Total: ${totals.explorers} Confirmed Guests (${totals.declined} declined)`;
+    }
+
+    async function handleRSVPSubmit(e) {
+      e.preventDefault();
+      const name = $('guestName').value.trim();
+      const contact = $('guestEmail').value.trim();
+      const status = document.querySelector('input[name="attendingStatus"]:checked').value;
+      if (!name || !contact) { showToast("Please fill in your name and contact info! 🐾", "warning"); return; }
+
+      const payload = {
+        name, contact, status,
+        adults: status === 'yes' ? $('adultsCount').value : 0,
+        kids: status === 'yes' ? $('kidsCount').value : 0,
+        diet: $('dietaryNotes').value.trim(),
+        note: $('guestNote').value.trim(),
+        website: $('rsvpWebsite').value
+      };
+
+      const btn = $('rsvpSubmitBtn');
+      btn.disabled = true; btn.classList.add('opacity-70');
+      try {
+        await api('/api/rsvp', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+      } catch (err) {
+        if (canFallback(err)) {
+          const list = localRsvps();
+          list.unshift({ ...payload, diet: payload.diet || 'None', date: new Date().toLocaleDateString() });
+          localStorage.setItem(STORAGE_KEY_RSVP, JSON.stringify(list));
+        } else {
+          showToast(err.message || "Couldn't send your RSVP. Please try again.", "warning");
+          btn.disabled = false; btn.classList.remove('opacity-70');
+          return;
+        }
+      }
+      btn.disabled = false; btn.classList.remove('opacity-70');
+
+      if (status === 'yes') {
+        triggerConfettiShower(true);
+        playSafariSound('birthday');
+        showToast(`Hooray, ${name}! Your Safari Explorer pass is booked! 🦁`, "success");
+      } else {
+        showToast(`Thank you, ${name}. We will miss you at the savanna! 🌿`, "info");
+      }
+      $('rsvpForm').reset();
+      loadRsvps();
+    }
+
+    /* ---------------- Guest list (public) & details (admin) ---------------- */
+    function renderGuestList() {
+      const container = $('guestListContainer');
+      const isAdmin = Boolean(getToken());
+      $('guestListTitle').innerText = isAdmin ? 'RSVP Details (Host View)' : 'Confirmed Safari Explorers';
+      $('guestListAdminBtn').innerText = isAdmin ? '🔓 Host' : '🔑 Admin';
+
+      if (isAdmin) {
+        container.innerHTML = adminRsvps.length ? adminRsvps.map(r => `
+          <div class="p-3 rounded-xl bg-safari-parchment/70 border border-safari-sage/20 text-xs space-y-1">
+            <div class="flex items-start justify-between gap-2">
+              <p class="font-bold text-safari-forest text-sm">${r.status === 'yes' ? '🦁' : '🌿'} ${esc(r.name)}</p>
+              <span class="shrink-0 px-2.5 py-1 rounded-full text-[10px] font-bold ${r.status === 'yes' ? 'bg-emerald-100 text-emerald-800' : 'bg-stone-100 text-stone-600'}">${r.status === 'yes' ? 'Attending' : 'Declined'}</span>
+            </div>
+            <p class="text-safari-olive">📞 ${esc(r.contact || r.email || '-')}</p>
+            ${r.status === 'yes' ? `<p class="text-safari-olive">👥 ${esc(r.adults)} Adults, ${esc(r.kids)} Cubs</p>` : ''}
+            <p class="text-safari-olive">🍽️ ${esc(r.diet || 'None')}</p>
+            ${r.note ? `<p class="text-safari-olive italic">"${esc(r.note)}"</p>` : ''}
+            <div class="flex items-center justify-between pt-1">
+              <span class="text-[10px] text-safari-olive/60">${r.createdAt ? new Date(r.createdAt).toLocaleString() : esc(r.date || '')}</span>
+              ${r.id ? `<button onclick="deleteRsvp('${esc(r.id)}')" class="text-[11px] font-bold text-safari-terracotta hover:underline">Delete</button>` : ''}
+            </div>
+          </div>`).join('') : emptyGuests();
+      } else {
+        container.innerHTML = guests.length ? guests.map(g => `
+          <div class="flex items-center justify-between p-3 rounded-xl bg-safari-parchment/70 border border-safari-sage/20 text-sm">
+            <p class="font-bold text-safari-forest flex items-center gap-1.5"><span>${g.status === 'yes' ? '🦁' : '🌿'}</span><span>${esc(g.name)}</span></p>
+            <span class="px-2.5 py-1 rounded-full text-[10px] font-bold ${g.status === 'yes' ? 'bg-emerald-100 text-emerald-800' : 'bg-stone-100 text-stone-600'}">${g.status === 'yes' ? 'Attending' : 'Declined'}</span>
+          </div>`).join('') : emptyGuests();
+      }
+    }
+    const emptyGuests = () => '<p class="text-center text-sm text-safari-olive py-8">No RSVPs yet &mdash; be the first explorer! 🦁</p>';
+
+    async function toggleGuestListModal() {
+      const modal = $('guestListModal');
+      if (!modal.classList.contains('hidden')) { closeModal('guestListModal'); return; }
+      await loadRsvps();
+      if (getToken()) await loadAdminRsvps();
+      renderGuestList();
+      openModal('guestListModal');
+    }
+
+    async function deleteRsvp(id) {
+      if (!confirm('Delete this RSVP?')) return;
+      try {
+        await api(`/api/admin?id=${encodeURIComponent(id)}`, { method: 'DELETE', headers: { Authorization: `Bearer ${getToken()}` } });
+        showToast("RSVP deleted.", "info");
+        await loadRsvps(); await loadAdminRsvps(); renderGuestList();
+      } catch (err) { showToast(err.message, "warning"); }
+    }
+
+    /* ---------------- Admin login ---------------- */
+    function openHostDashboard() {
+      closeModal('guestListModal');
+      if (getToken()) {
+        loadRsvps().then(() => openModal('hostAdminModal'));
+      } else {
+        $('adminLoginError').classList.add('hidden');
+        openModal('adminLoginModal');
+        setTimeout(() => $('adminUser').focus(), 50);
+      }
+    }
+    function closeAdminLogin() { closeModal('adminLoginModal'); }
+    function toggleHostAdminModal() {
+      const m = $('hostAdminModal');
+      m.classList.contains('hidden') ? openHostDashboard() : closeModal('hostAdminModal');
+    }
+
+    async function handleAdminLogin(e) {
+      e.preventDefault();
+      const btn = $('adminLoginBtn');
+      const errEl = $('adminLoginError');
+      btn.disabled = true; btn.innerText = 'Signing in...'; errEl.classList.add('hidden');
+      try {
+        const data = await api('/api/admin', {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ user: $('adminUser').value.trim(), password: $('adminPass').value })
+        });
+        sessionStorage.setItem(TOKEN_KEY, data.token);
+        $('adminPass').value = '';
+        closeAdminLogin();
+        showToast("Welcome back, host! 🔑", "success");
+        toggleGuestListModal();
+      } catch (err) {
+        errEl.innerText = err.status === 503 || !err.status
+          ? 'Admin login is available on the live website only.'
+          : (err.message || 'Login failed.');
+        errEl.classList.remove('hidden');
+      }
+      btn.disabled = false; btn.innerText = 'Sign In';
+    }
+
+    function adminLogout(silent) {
+      sessionStorage.removeItem(TOKEN_KEY);
+      adminRsvps = [];
+      closeModal('hostAdminModal'); closeModal('guestListModal');
+      if (silent !== true) showToast("Logged out.", "info");
+    }
+
+    function csvCell(v) {
+      let t = String(v == null ? '' : v);
+      if (/^[=+\-@\t\r]/.test(t)) t = "'" + t; // prevent spreadsheet formula injection
+      return `"${t.replace(/"/g, '""')}"`;
+    }
+    async function exportRSVPToCSV() {
+      if (!(await loadAdminRsvps())) return;
+      const rows = [["Name", "Contact", "Attending", "Adults", "Kids", "Dietary", "Notes", "Submitted"]];
+      adminRsvps.forEach(r => rows.push([r.name, r.contact || r.email, r.status, r.adults, r.kids, r.diet, r.note, r.createdAt ? new Date(r.createdAt).toISOString() : r.date]));
+      const csv = '\ufeff' + rows.map(r => r.map(csvCell).join(',')).join('\n');
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8' }));
+      link.download = 'Terrence_Wild_One_RSVP_List.csv';
+      document.body.appendChild(link); link.click(); document.body.removeChild(link);
+      showToast("RSVP CSV list downloaded! 📁", "success");
+    }
+
+    /* ---------------- Wishes ---------------- */
+    let wishes = [];
+    async function loadWishes() {
+      try {
+        wishes = (await api('/api/wishes')).wishes;
+      } catch (err) {
+        if (canFallback(err)) { try { wishes = JSON.parse(localStorage.getItem(STORAGE_KEY_WISHES)) || []; } catch (e) { wishes = []; } }
+      }
+      renderWishes();
+    }
+    function renderWishes() {
+      const container = $('wishesGrid');
+      if (!wishes.length) {
+        container.innerHTML = '<p class="sm:col-span-2 text-center text-sm text-safari-olive py-6">Be the first to leave a birthday wish for Terrence! 🌟</p>';
+        return;
+      }
+      container.innerHTML = wishes.map((w, i) => `
+        <div style="--d:${(i % 2) * 0.1}s" class="reveal bg-white p-4 sm:p-5 rounded-2xl border border-safari-sage/30 shadow-sm text-left">
+          <div class="flex items-center justify-between mb-2">
+            <div class="flex items-center gap-2">
+              <span class="text-2xl">${esc(w.avatar || '🦁')}</span>
+              <span class="font-serif font-bold text-safari-forest text-sm sm:text-base">${esc(w.author)}</span>
+            </div>
+            <span class="text-[10px] text-safari-olive/60">${w.createdAt ? new Date(w.createdAt).toLocaleDateString() : 'Just now'}</span>
+          </div>
+          <p class="text-xs sm:text-sm text-safari-olive/90 italic">"${esc(w.text)}"</p>
+        </div>`).join('');
+      observeReveals(container);
+    }
+    async function handleWishSubmit(e) {
+      e.preventDefault();
+      const author = $('wishAuthor').value.trim();
+      const avatar = $('wishAvatar').value;
+      const text = $('wishMessage').value.trim();
+      if (!author || !text) return;
+      try {
+        await api('/api/wishes', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ author, avatar, text }) });
+      } catch (err) {
+        if (canFallback(err)) {
+          wishes.unshift({ author, avatar, text, createdAt: Date.now() });
+          localStorage.setItem(STORAGE_KEY_WISHES, JSON.stringify(wishes));
+        } else { showToast(err.message || "Couldn't post your wish. Try again.", "warning"); return; }
+      }
+      $('wishForm').reset();
+      triggerConfettiShower();
+      showToast("Your wish is posted on Terrence's board! 🌟", "success");
+      loadWishes();
+    }
+
+    /* ---------------- Music & sound ---------------- */
+    let synth = null;          // sound-effects synth
+    let musicOn = false;
+    let musicReady = false;
+    let musicLoop = null;
+
+    function initSynth() {
+      if (synth || typeof Tone === 'undefined') return;
+      synth = new Tone.PolySynth(Tone.Synth, {
+        oscillator: { type: 'triangle' },
+        envelope: { attack: 0.02, decay: 0.1, sustain: 0.3, release: 0.8 }
+      }).toDestination();
+      synth.volume.value = -8;
+    }
+
+    /* Gentle generative music-box lullaby: C - Am - F - G arpeggios with a sparkly melody */
+    function initMusic() {
+      if (musicReady || typeof Tone === 'undefined') return;
+      const reverb = new Tone.Reverb({ decay: 4, wet: 0.35 }).toDestination();
+      const delay = new Tone.FeedbackDelay('8n.', 0.25).connect(reverb);
+      const box = new Tone.PolySynth(Tone.Synth, {
+        oscillator: { type: 'sine' },
+        envelope: { attack: 0.005, decay: 0.4, sustain: 0.05, release: 1.4 }
+      }).connect(delay);
+      box.volume.value = -16;
+      const pad = new Tone.PolySynth(Tone.Synth, {
+        oscillator: { type: 'triangle' },
+        envelope: { attack: 1.2, decay: 0.5, sustain: 0.6, release: 2 }
+      }).connect(reverb);
+      pad.volume.value = -26;
+
+      const chords = [
+        { arp: ['C4', 'E4', 'G4', 'C5', 'G4', 'E4'], pad: ['C3', 'G3', 'E4'] },
+        { arp: ['A3', 'C4', 'E4', 'A4', 'E4', 'C4'], pad: ['A2', 'E3', 'C4'] },
+        { arp: ['F3', 'A3', 'C4', 'F4', 'C4', 'A3'], pad: ['F2', 'C3', 'A3'] },
+        { arp: ['G3', 'B3', 'D4', 'G4', 'D4', 'B3'], pad: ['G2', 'D3', 'B3'] }
+      ];
+      const melodyPool = ['E5', 'G5', 'A5', 'C6', 'D5', 'G5', 'E5'];
+      let step = 0;
+      musicLoop = new Tone.Loop(time => {
+        const bar = Math.floor(step / 6) % chords.length;
+        const c = chords[bar];
+        if (step % 6 === 0) pad.triggerAttackRelease(c.pad, '1m', time);
+        box.triggerAttackRelease(c.arp[step % 6], '8n', time);
+        if (step % 3 === 2 && Math.random() > 0.35) {
+          box.triggerAttackRelease(melodyPool[Math.floor(Math.random() * melodyPool.length)], '4n', time + 0.02, 0.7);
+        }
+        step++;
+      }, '8n');
+      Tone.Transport.bpm.value = 84;
+      musicLoop.start(0);
+      musicReady = true;
+    }
+
+    async function startMusic() {
+      if (typeof Tone === 'undefined') return false;
+      try {
+        await Tone.start();
+        initSynth(); initMusic();
+        Tone.Transport.start();
+        musicOn = true;
+        syncMusicUI();
+        return true;
+      } catch (err) { console.error('Audio error:', err); return false; }
+    }
+    function stopMusic() {
+      if (typeof Tone !== 'undefined') Tone.Transport.pause();
+      musicOn = false;
+      syncMusicUI();
+    }
+    function syncMusicUI() {
+      $('soundIcon').innerText = musicOn ? '🎵' : '🔇';
+      $('soundLabel').innerText = musicOn ? 'Music On' : 'Music Off';
+      $('eqBars').classList.toggle('on', musicOn);
+    }
+    async function togglePartySound() {
+      if (musicOn) { stopMusic(); showToast("Music paused", "info"); }
+      else if (await startMusic()) showToast("Safari lullaby playing 🎵", "info");
+    }
+    document.addEventListener('visibilitychange', () => {
+      if (typeof Tone === 'undefined' || !musicReady) return;
+      if (document.hidden) Tone.Transport.pause();
+      else if (musicOn) Tone.Transport.start();
+    });
+
+    async function playSafariSound(type) {
+      try {
+        if (typeof Tone === 'undefined') return;
+        await Tone.start();
+        initSynth();
+        const now = Tone.now();
+        if (type === 'lion') {
+          synth.triggerAttackRelease(["F2", "C3", "G3"], "4n", now);
+          synth.triggerAttackRelease(["D2", "A2", "E3"], "2n", now + 0.2);
+          showToast("ROAR! The King of the Jungle has arrived! 🦁", "info");
+        } else if (type === 'elephant') {
+          synth.triggerAttackRelease(["G4", "C5", "E5", "G5"], "16n", now);
+          synth.triggerAttackRelease(["A5", "C6"], "4n", now + 0.15);
+          showToast("Trumpet call from the savanna herd! 🐘", "info");
+        } else if (type === 'monkey') {
+          ["E5", "G5", "B5", "E6"].forEach((n, i) => synth.triggerAttackRelease(n, i === 3 ? "8n" : "16n", now + i * 0.08));
+          showToast("Playful monkey chatter! 🐒", "info");
+        } else if (type === 'birthday') {
+          [["C4", "8n", 0], ["C4", "8n", 0.2], ["D4", "4n", 0.4], ["C4", "4n", 0.7], ["F4", "4n", 1.0], ["E4", "2n", 1.3]]
+            .forEach(n => synth.triggerAttackRelease(n[0], n[1], now + n[2]));
+          showToast("🎶 Happy Birthday dear Terrence! 🎶", "success");
+        }
+      } catch (err) { console.error("Audio error:", err); }
+    }
+
+    /* ---------------- Effects ---------------- */
+    function triggerConfettiShower(big) {
+      if (typeof confetti !== 'function' || reduceMotion) return;
+      const colors = ['#D4AF37', '#2D4A36', '#8BA888', '#C86D51', '#FAF7F0'];
+      confetti({ particleCount: 70, spread: 80, origin: { y: 0.6 }, colors });
+      if (big) {
+        [0, 1].forEach(side => confetti({ particleCount: 60, angle: side ? 120 : 60, spread: 60, origin: { x: side, y: 0.75 }, colors }));
+        setTimeout(() => confetti({ particleCount: 40, spread: 360, startVelocity: 25, gravity: 0.6, scalar: 1.2, origin: { x: 0.5, y: 0.35 }, colors, shapes: ['star'] }), 350);
+      }
+    }
+
+    function fireworks() {
+      if (typeof confetti !== 'function' || reduceMotion) return;
+      const end = Date.now() + 2200;
+      const colors = ['#D4AF37', '#F3E5AB', '#8BA888', '#C86D51'];
+      (function frame() {
+        confetti({ particleCount: 3, angle: 60, spread: 55, origin: { x: 0, y: 0.8 }, colors });
+        confetti({ particleCount: 3, angle: 120, spread: 55, origin: { x: 1, y: 0.8 }, colors });
+        if (Date.now() < end) requestAnimationFrame(frame);
+      })();
+    }
+
+    function observeReveals(root = document) {
+      const els = root.querySelectorAll('.reveal:not(.in)');
+      if (!('IntersectionObserver' in window)) { els.forEach(el => el.classList.add('in')); return; }
+      els.forEach(el => revealObserver.observe(el));
+    }
+    const revealObserver = 'IntersectionObserver' in window
+      ? new IntersectionObserver(entries => entries.forEach(en => {
+          if (en.isIntersecting) { en.target.classList.add('in'); revealObserver.unobserve(en.target); }
+        }), { threshold: 0.12, rootMargin: '0px 0px -40px 0px' })
+      : null;
+
+    function initScrollProgress() {
+      const bar = $('scrollProgress');
+      const update = () => {
+        const h = document.documentElement.scrollHeight - innerHeight;
+        bar.style.width = (h > 0 ? (scrollY / h) * 100 : 0) + '%';
+      };
+      addEventListener('scroll', update, { passive: true }); update();
+    }
+
+    function initTapSparkles() {
+      if (reduceMotion) return;
+      const icons = ['✨', '🐾', '🌿', '⭐', '🍃'];
+      document.addEventListener('pointerdown', e => {
+        if (e.target.closest('input, textarea, select')) return;
+        for (let i = 0; i < 5; i++) {
+          const s = document.createElement('span');
+          s.className = 'spark';
+          s.textContent = icons[Math.floor(Math.random() * icons.length)];
+          const a = Math.random() * Math.PI * 2, d = 30 + Math.random() * 40;
+          s.style.cssText = `left:${e.clientX}px;top:${e.clientY}px;--dx:${Math.cos(a) * d}px;--dy:${Math.sin(a) * d}px`;
+          document.body.appendChild(s);
+          setTimeout(() => s.remove(), 800);
+        }
+      }, { passive: true });
+    }
+
+    function initFloaties() {
+      if (reduceMotion) return;
+      const icons = ['🎈', '🦒', '🐘', '🦁', '🎈', '🐒', '🦓', '🎈'];
+      const count = innerWidth < 640 ? 5 : 8;
+      for (let i = 0; i < count; i++) {
+        const el = document.createElement('span');
+        el.className = 'floaty';
+        el.textContent = icons[i % icons.length];
+        el.style.left = (5 + (i * 90) / count + Math.random() * 6) + '%';
+        el.style.fontSize = (22 + Math.random() * 16) + 'px';
+        el.style.animationDuration = (22 + Math.random() * 18) + 's';
+        el.style.animationDelay = (-Math.random() * 30) + 's';
+        document.body.appendChild(el);
+      }
+    }
+
+    /* ---------------- Venue / calendar / info ---------------- */
+    function copyVenueAddress(which) {
+      const address = VENUES[which];
+      const lbl = $(which === 'church' ? 'copyChurchLabel' : 'copyResortLabel');
+      const original = lbl.innerText;
+      const done = () => { lbl.innerText = "Address Copied!"; showToast("Address copied to clipboard! 📋", "success"); setTimeout(() => lbl.innerText = original, 3000); };
+      if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(address).then(done, () => showToast("Address: " + address, "info"));
+        return;
+      }
+      const t = document.createElement('textarea');
+      t.value = address; document.body.appendChild(t); t.select();
+      try { document.execCommand('copy'); done(); } catch (e) { showToast("Address: " + address, "info"); }
+      document.body.removeChild(t);
+    }
+
+    function addToCalendarHandler() {
+      const title = encodeURIComponent("Terrence's 1st Birthday - Wild One Safari!");
+      const details = encodeURIComponent("Holy Mass at 11:30 AM (Minor Basilica and Parish of Our Lady of the Most Holy Rosary, Angeles City). Reception at 1:00 PM at CC Resort, Porac, Pampanga. Wear safari khaki/earth tones!");
+      const location = encodeURIComponent(VENUES.church);
+      const url = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=20261108T033000Z/20261108T100000Z&details=${details}&location=${location}`;
+      window.open(url, '_blank');
+      showToast("Opening calendar invitation... 📅", "info");
+    }
+
+    function showInfo(icon, title, html) {
+      $('infoModalIcon').innerText = icon;
+      $('infoModalTitle').innerText = title;
+      $('infoModalBody').innerHTML = html;
+      openModal('infoModal');
+    }
+    function closeInfoModal() { closeModal('infoModal'); }
+
+    function showRegistryModal() {
+      const items = [
+        ['🧷', 'Diapers', 'Always needed!'],
+        ['🧻', 'Wet wipes', 'Gentle, fragrance-free'],
+        ['🍼', 'Baby milk / formula', 'And feeding essentials'],
+        ['🛁', 'Bath essentials', 'Baby wash, shampoo & lotion'],
+        ['👕', 'Clothes & sleepwear', 'For his growing wild days']
+      ];
+      showInfo('🍼', 'Baby Essentials', `<p>Practical things Terrence needs every single day:</p>` + items.map(i =>
+        `<div class="flex items-center gap-3 p-3 rounded-xl bg-safari-parchment/70 border border-safari-sage/20"><span class="text-2xl">${i[0]}</span><div><p class="font-bold text-safari-forest">${i[1]}</p><p class="text-[11px]">${i[2]}</p></div></div>`).join('') +
+        `<p class="text-[11px] text-safari-olive/70">Thank you for thinking of our little explorer! 💚</p>`);
+    }
+
+    function showFundModal() {
+      const rows = [];
+      if (FUND_INFO.gcash) rows.push(['GCash', FUND_INFO.gcash]);
+      if (FUND_INFO.bank) rows.push(['Bank', FUND_INFO.bank]);
+      const body = rows.length
+        ? rows.map(r => `<div class="p-3 rounded-xl bg-safari-sand"><p class="text-[11px] uppercase tracking-wider font-bold text-safari-moss">${esc(r[0])}</p><p class="font-bold text-safari-forest break-words">${esc(r[1])}</p></div>`).join('')
+        : `<p class="p-3 rounded-xl bg-safari-sand">Please message Terrence's parents for the Future Explorer Fund details. 🌱</p>`;
+      showInfo('🌱', 'Future Explorer Fund', `<p>Every bit goes toward Terrence's future &mdash; his education and the adventures still waiting for him.</p>${body}<p class="text-[11px] text-safari-olive/70">Your presence is already the best gift. Thank you! 💚</p>`);
+    }
+
+    /* ---------------- Toasts ---------------- */
+    function showToast(message, type = 'info') {
+      const container = $('toastContainer');
+      const toast = document.createElement('div');
+      const bgColors = {
+        success: 'bg-safari-forest text-safari-goldLight border-safari-gold',
+        warning: 'bg-amber-800 text-amber-50 border-amber-500',
+        info: 'bg-safari-deepDark text-white border-safari-sage'
+      };
+      toast.className = `pointer-events-auto flex items-center gap-2.5 px-4 py-3 rounded-2xl shadow-xl border text-xs sm:text-sm font-semibold transition-all transform translate-y-4 opacity-0 ${bgColors[type] || bgColors.info}`;
+      toast.textContent = message;
+      container.appendChild(toast);
+      requestAnimationFrame(() => toast.classList.remove('translate-y-4', 'opacity-0'));
+      setTimeout(() => {
+        toast.classList.add('opacity-0', 'translate-y-2');
+        setTimeout(() => toast.remove(), 300);
+      }, 3500);
+    }
+
+    /* ---------------- Ambient leaves ---------------- */
+    function initAmbientCanvas() {
+      const canvas = $('ambientCanvas');
+      const ctx = canvas.getContext('2d');
+      let width = (canvas.width = innerWidth);
+      let height = (canvas.height = innerHeight);
+      addEventListener('resize', () => { width = canvas.width = innerWidth; height = canvas.height = innerHeight; });
+
+      const leaves = [];
+      const leafColors = ['#8BA888', '#D4AF37', '#425C47', '#C2B280'];
+      for (let i = 0; i < 18; i++) {
+        leaves.push({
+          x: Math.random() * width, y: Math.random() * height,
+          size: Math.random() * 8 + 6, speedY: Math.random() * 0.7 + 0.3, speedX: Math.random() * 0.6 - 0.3,
+          angle: Math.random() * Math.PI * 2, angularSpeed: (Math.random() - 0.5) * 0.02,
+          color: leafColors[Math.floor(Math.random() * leafColors.length)], opacity: Math.random() * 0.25 + 0.1
+        });
+      }
+      function draw(l) {
+        ctx.save(); ctx.translate(l.x, l.y); ctx.rotate(l.angle);
+        ctx.globalAlpha = l.opacity; ctx.fillStyle = l.color;
+        ctx.beginPath(); ctx.moveTo(0, -l.size);
+        ctx.quadraticCurveTo(l.size * 0.8, 0, 0, l.size);
+        ctx.quadraticCurveTo(-l.size * 0.8, 0, 0, -l.size);
+        ctx.fill(); ctx.restore();
+      }
+      function animate() {
+        ctx.clearRect(0, 0, width, height);
+        if (!document.hidden) {
+          leaves.forEach(l => {
+            l.y += l.speedY; l.x += l.speedX + Math.sin(l.angle) * 0.2; l.angle += l.angularSpeed;
+            if (l.y > height + 20) { l.y = -20; l.x = Math.random() * width; }
+            if (l.x > width + 20) l.x = -20;
+            if (l.x < -20) l.x = width + 20;
+            draw(l);
+          });
+        }
+        requestAnimationFrame(animate);
+      }
+      animate();
+    }
+
+    /* ---------------- Invitation gate ---------------- */
+    function openInvitation() {
+      const splash = $('splash');
+      splash.classList.add('closing');
+      document.body.classList.remove('splash-open');
+      startMusic();
+      setTimeout(fireworks, 300);
+      setTimeout(() => splash.remove(), 1000);
+    }
+
+    window.addEventListener('load', () => {
+      document.body.classList.add('splash-open');
+      $('openInviteBtn').addEventListener('click', openInvitation);
+
+      updateCountdown();
+      setInterval(updateCountdown, 1000);
+      renderMilestones();
+      renderWishes();
+      loadRsvps();
+      loadWishes();
+      observeReveals();
+      initAmbientCanvas();
+      initScrollProgress();
+      initTapSparkles();
+      initFloaties();
+
+      addEventListener('keydown', e => {
+        if (e.key !== 'Escape') return;
+        ['guestListModal', 'adminLoginModal', 'hostAdminModal', 'infoModal', 'milestoneModal'].forEach(closeModal);
+      });
+      ['guestListModal', 'adminLoginModal', 'hostAdminModal', 'infoModal', 'milestoneModal'].forEach(id =>
+        $(id).addEventListener('click', e => { if (e.target.id === id) closeModal(id); }));
+    });
+  </script>
+</body>
+</html>
