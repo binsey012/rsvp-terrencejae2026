@@ -4,11 +4,11 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#1E3A2B" />
-  <meta name="description" content="You're invited to Terrence Jae G. Yap's Wild One Safari 1st Birthday on Sunday, November 8, 2026. RSVP here!" />
-  <meta property="og:title" content="Terrence is Turning Wild One! | Safari 1st Birthday" />
-  <meta property="og:description" content="Sunday, November 8, 2026 • Holy Mass 11:30 AM • Reception 1:00 PM at CC Resort, Porac, Pampanga" />
+  <meta name="description" content="You're invited to Terrence Jae G. Yap's 1st Birthday Celebration and Christening on Sunday, November 8, 2026. RSVP here!" />
+  <meta property="og:title" content="Terrence's 1st Birthday Celebration and Christening" />
+  <meta property="og:description" content="Sunday, November 8, 2026 • Christening 11:30 AM • Reception 1:00 PM at CC Resort, Porac, Pampanga" />
   <meta property="og:image" content="img/main-photo.png" />
-  <title>Terrence is Turning Wild One! | Safari 1st Birthday Celebration</title>
+  <title>Terrence's 1st Birthday Celebration and Christening</title>
 
   <!-- Google Fonts: Playfair Display for luxe titles, Plus Jakarta Sans for crisp UI, Caveat for playful safari handwriting -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -169,6 +169,31 @@
     @keyframes wiggle { 0%,100% { transform: rotate(-6deg); } 50% { transform: rotate(6deg); } }
     .wiggle { animation: wiggle 2.2s ease-in-out infinite; }
 
+    .gift-lights {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin: 0 auto 1rem;
+    }
+    .gift-light {
+      width: .7rem;
+      height: .7rem;
+      border-radius: 9999px;
+      background: var(--light-color);
+      box-shadow: 0 0 8px var(--light-color);
+      animation: giftLightGlow 1.8s ease-in-out infinite alternate;
+      animation-delay: var(--delay, 0s);
+    }
+    .gift-light-text { animation: giftTextGlow 2.8s ease-in-out infinite alternate; }
+    @keyframes giftLightGlow {
+      from { opacity: .55; box-shadow: 0 0 3px var(--light-color); }
+      to { opacity: 1; box-shadow: 0 0 14px var(--light-color); }
+    }
+    @keyframes giftTextGlow {
+      from { text-shadow: 0 0 0 rgba(212, 175, 55, 0); }
+      to { text-shadow: 0 0 12px rgba(212, 175, 55, .45); }
+    }
+
     /* Floating balloons / animals background */
     .floaty { position: fixed; bottom: -60px; z-index: 5; pointer-events: none; opacity: .5; animation: riseUp linear infinite; will-change: transform; }
     @keyframes riseUp { 0% { transform: translateY(0) translateX(0) rotate(0); } 50% { transform: translateY(-60vh) translateX(18px) rotate(8deg); } 100% { transform: translateY(-120vh) translateX(-12px) rotate(-6deg); } }
@@ -186,7 +211,7 @@
 
     @media (prefers-reduced-motion: reduce) {
       .reveal { opacity: 1; transform: none; transition: none; }
-      .floaty, .splash-rays, .gold-shimmer, .ring-pulse, .wiggle { animation: none; }
+      .floaty, .splash-rays, .gold-shimmer, .ring-pulse, .wiggle, .gift-light, .gift-light-text { animation: none; }
     }
   </style>
 </head>
@@ -204,6 +229,7 @@
       <div class="pop-in text-5xl mb-3 wiggle" style="--d:.1s">🦁</div>
       <p class="pop-in text-xs uppercase tracking-[0.3em] text-safari-goldLight font-bold" style="--d:.25s">You're Invited</p>
       <h2 class="pop-in font-serif font-black text-4xl text-safari-sand mt-2 leading-tight" style="--d:.4s">Terrence is<br><span class="gold-shimmer">Wild One!</span></h2>
+      <p class="pop-in text-xs sm:text-sm uppercase tracking-wider text-safari-goldLight mt-2" style="--d:.5s">1st Birthday Celebration & Christening</p>
       <div class="pop-in relative w-40 h-40 mx-auto my-6 rounded-full p-1.5 bg-gradient-to-tr from-safari-gold via-safari-sage to-safari-forest ring-pulse" style="--d:.6s">
         <div class="w-full h-full rounded-full overflow-hidden border-4 border-safari-parchment bg-safari-sand">
           <img src="img/main-photo.png" alt="Terrence" class="w-full h-full object-cover object-top" />
@@ -223,7 +249,7 @@
       <a href="#hero" class="flex items-center gap-2 group">
         <span class="text-2xl sm:text-3xl filter transition-transform group-hover:scale-110">🦁</span>
         <div class="leading-tight">
-          <span class="block text-xs uppercase tracking-widest text-safari-moss font-bold">First Birthday Safari</span>
+          <span class="block text-xs uppercase tracking-widest text-safari-moss font-bold">Birthday & Christening Safari</span>
           <span class="font-serif font-extrabold text-sm sm:text-xl text-safari-forest tracking-tight whitespace-nowrap">TERRENCE IS WILD ONE</span>
         </div>
       </a>
@@ -233,7 +259,7 @@
         <a href="#details" class="hover:text-safari-terracotta transition-colors">Details</a>
         <a href="#timeline" class="hover:text-safari-terracotta transition-colors">Safari Trail</a>
         <a href="#milestones" class="hover:text-safari-terracotta transition-colors">12 Mo Journey</a>
-        <a href="#registry" class="hover:text-safari-terracotta transition-colors">Explorer Registry</a>
+        <a href="#registry" class="hover:text-safari-terracotta transition-colors">Gift Wishes</a>
         <a href="#guestbook" class="hover:text-safari-terracotta transition-colors">Wishes</a>
       </nav>
 
@@ -301,7 +327,7 @@
             TERRENCE IS <span class="gold-shimmer block sm:inline font-black">WILD ONE!</span>
           </h1>
           <p class="font-serif font-bold text-lg sm:text-2xl text-safari-moss reveal" style="--d:.15s">Terrence Jae G. Yap</p>
-          <p class="text-[11px] sm:text-xs uppercase tracking-[0.25em] text-safari-terracotta font-bold mb-4 reveal" style="--d:.2s">1st Birthday</p>
+          <p class="text-[11px] sm:text-xs uppercase tracking-[0.25em] text-safari-terracotta font-bold mb-4 reveal" style="--d:.2s">1st Birthday Celebration & Christening</p>
 
           <p class="text-safari-olive/80 text-sm sm:text-base max-w-lg mx-auto mb-6 reveal" style="--d:.25s">
             Join our intrepid explorer as we celebrate his first year of adventures, cuddles, roars, and milestone expeditions in the savanna jungle!
@@ -335,7 +361,7 @@
               <div>
                 <p class="text-[11px] uppercase tracking-wider text-safari-moss font-bold">When</p>
                 <p class="text-xs sm:text-sm font-bold text-safari-deepDark" id="displayDate">Sunday, Nov 8, 2026</p>
-                <p class="text-[11px] text-safari-olive/80">Mass 11:30 AM • Party 1:00 PM</p>
+                <p class="text-[11px] text-safari-olive/80">Christening 11:30 AM • Party 1:00 PM</p>
               </div>
             </div>
 
@@ -421,11 +447,11 @@
           </div>
           <div class="bg-white p-5 rounded-2xl border border-safari-sage/30 shadow-sm transition-all group-hover:border-safari-sage group-hover:shadow-md group-hover:-translate-y-0.5">
             <div class="flex items-center gap-2 font-serif font-bold text-lg text-safari-forest">
-              <span>Holy Mass at the Basilica</span>
+              <span>Christening at the Basilica</span>
               <span>⛪</span>
             </div>
             <p class="text-sm text-safari-olive mt-1">
-              Join us as we give thanks for Terrence's first year of life at the Minor Basilica and Parish of Our Lady of the Most Holy Rosary, Angeles City.
+              Join us for Terrence's Christening at the Minor Basilica and Parish of Our Lady of the Most Holy Rosary, Angeles City, then celebrate his first birthday together.
             </p>
           </div>
         </div>
@@ -588,7 +614,7 @@
             💌
           </div>
           <span class="text-xs uppercase tracking-widest text-safari-terracotta font-bold">Join The Safari Troop</span>
-          <h2 class="font-serif font-black text-3xl sm:text-4xl text-safari-forest mt-1">RSVP to Terrence's Birthday</h2>
+          <h2 class="font-serif font-black text-3xl sm:text-4xl text-safari-forest mt-1">RSVP to Terrence's Birthday & Christening</h2>
           <p class="text-safari-olive/80 text-sm max-w-md mx-auto mt-2">
             Kindly confirm your presence by <strong class="text-safari-forest">October 25, 2026</strong> so we can prepare enough rations & jungle treats!
           </p>
@@ -735,7 +761,7 @@
               <!-- Church -->
               <div>
                 <div class="flex items-center justify-between mb-3 gap-2">
-                  <span class="px-3 py-1 rounded-full bg-safari-sand text-safari-forest text-xs font-bold uppercase tracking-wider">Stop 1 &bull; Holy Mass</span>
+                  <span class="px-3 py-1 rounded-full bg-safari-sand text-safari-forest text-xs font-bold uppercase tracking-wider">Stop 1 &bull; Christening</span>
                   <span class="text-sm font-semibold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-full whitespace-nowrap">11:30 AM</span>
                 </div>
                 <h3 class="font-serif font-bold text-xl text-safari-forest mb-1">Minor Basilica and Parish of Our Lady of the Most Holy Rosary</h3>
@@ -764,7 +790,7 @@
               <div class="space-y-3 text-xs sm:text-sm text-safari-olive/90 pt-2">
                 <div class="flex items-start gap-3">
                   <span class="text-lg">🚙</span>
-                  <span><strong>Travel Time:</strong> Allow time to drive from Angeles City to Porac after the Mass. We start the reception at 1:00 PM sharp!</span>
+                  <span><strong>Travel Time:</strong> Allow time to drive from Angeles City to Porac after the Christening. We start the reception at 1:00 PM sharp!</span>
                 </div>
                 <div class="flex items-start gap-3">
                   <span class="text-lg">👒</span>
@@ -811,42 +837,21 @@
     </section>
 
     <section id="registry" class="py-16 px-4 sm:px-6 max-w-4xl mx-auto text-center">
-      <span class="text-xs uppercase tracking-widest text-safari-terracotta font-bold reveal">Little Explorer Wishing Well</span>
-      <h2 class="font-serif font-black text-3xl sm:text-4xl text-safari-forest mt-1 reveal">Registry & Gift Ideas</h2>
-      <p class="text-safari-olive/80 text-sm max-w-lg mx-auto mt-2 reveal">
-        Your presence and warm hugs are our greatest treasure! If you wish to bless Terrence with a gift, here are the things he needs most:
-      </p>
-
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-5 mt-10">
-        <!-- Option 1: Baby Essentials -->
-        <div class="bg-white p-6 rounded-3xl border border-safari-sage/30 shadow-sm hover:border-safari-moss hover:shadow-md transition-all text-left group reveal">
-          <div class="w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-800 flex items-center justify-center text-2xl mb-4 group-hover:scale-110 transition-transform">
-            🍼
-          </div>
-          <h3 class="font-serif font-bold text-lg text-safari-forest">Baby Essentials</h3>
-          <p class="text-xs text-safari-olive mt-1.5 mb-5">
-            Diapers, wet wipes, baby milk, baby wash & lotion, and everyday clothes for his growing wild days.
-          </p>
-          <button onclick="showRegistryModal()" class="text-xs font-bold text-safari-moss group-hover:text-safari-terracotta transition-colors flex items-center gap-1">
-            <span>See Essentials List</span>
-            <span>&rarr;</span>
-          </button>
+      <span class="text-xs uppercase tracking-widest text-safari-terracotta font-bold reveal">A Little Thoughtfulness</span>
+      <h2 class="font-serif font-black text-3xl sm:text-4xl text-safari-forest mt-1 reveal">A Gift from the Heart</h2>
+      <div class="bg-white max-w-2xl mx-auto mt-8 p-7 sm:p-10 rounded-3xl border border-safari-sage/30 shadow-safari-card reveal">
+        <div class="gift-lights" aria-hidden="true">
+          <span class="gift-light" style="--light-color:#C86D51"></span>
+          <span class="gift-light" style="--light-color:#D4AF37;--delay:.3s"></span>
+          <span class="gift-light" style="--light-color:#8BA888;--delay:.6s"></span>
+          <span class="gift-light" style="--light-color:#C86D51;--delay:.9s"></span>
+          <span class="gift-light" style="--light-color:#D4AF37;--delay:1.2s"></span>
         </div>
-
-        <!-- Option 2: Future Explorer Fund -->
-        <div class="bg-white p-6 rounded-3xl border border-safari-sage/30 shadow-sm hover:border-safari-moss hover:shadow-md transition-all text-left group reveal" style="--d:.15s">
-          <div class="w-12 h-12 rounded-2xl bg-orange-50 text-orange-800 flex items-center justify-center text-2xl mb-4 group-hover:scale-110 transition-transform">
-            🌱
-          </div>
-          <h3 class="font-serif font-bold text-lg text-safari-forest">Future Explorer Fund</h3>
-          <p class="text-xs text-safari-olive mt-1.5 mb-5">
-            Contribute toward Terrence's future &mdash; his education and the adventures still waiting for him.
-          </p>
-          <button onclick="showFundModal()" class="text-xs font-bold text-safari-moss group-hover:text-safari-terracotta transition-colors flex items-center gap-1">
-            <span>View Fund Info</span>
-            <span>&rarr;</span>
-          </button>
-        </div>
+        <h3 class="gift-light-text font-serif font-bold text-xl sm:text-2xl text-safari-forest">Give whatever you wish</h3>
+        <p class="text-sm sm:text-base text-safari-olive/90 max-w-lg mx-auto mt-3">
+          Your presence is the greatest gift. If you'd like to give Terrence something, anything you choose from the heart will be warmly appreciated. No specific gift is expected.
+        </p>
+        <div class="text-3xl mt-5" aria-hidden="true">🎁</div>
       </div>
     </section>
 
@@ -948,7 +953,7 @@
     <div class="max-w-4xl mx-auto text-center space-y-6">
       <div class="flex items-center justify-center gap-3">
         <span class="text-2xl">🦁</span>
-        <span class="font-serif font-extrabold text-xl sm:text-2xl tracking-tight text-safari-goldLight">Terrence is Wild One</span>
+        <span class="font-serif font-extrabold text-xl sm:text-2xl tracking-tight text-safari-goldLight">Terrence's Birthday & Christening</span>
         <span class="text-2xl">🦒</span>
       </div>
 
@@ -968,7 +973,7 @@
       </div>
 
       <p class="text-[11px] text-safari-sage/60 pt-4 border-t border-safari-moss/40">
-        Wild One Safari 1st Birthday Digital Invitation. Crafted with joy and celebration.
+        Wild One Safari 1st Birthday Celebration & Christening Invitation. Crafted with joy and celebration.
       </p>
       <p class="text-xs sm:text-sm font-semibold text-safari-goldLight">
         <span class="font-script text-lg sm:text-xl">Ninong Beans Creation 2026</span>
@@ -1070,21 +1075,6 @@
     </div>
   </div>
 
-  <!-- Info Modal (registry & fund) -->
-  <div id="infoModal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden items-center justify-center p-4">
-    <div class="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl max-h-[85vh] overflow-y-auto">
-      <div class="flex items-center justify-between pb-3 border-b border-safari-sage/30">
-        <div class="flex items-center gap-2">
-          <span id="infoModalIcon" class="text-2xl">🍼</span>
-          <h3 id="infoModalTitle" class="font-serif font-bold text-lg text-safari-forest">Baby Essentials</h3>
-        </div>
-        <button onclick="closeInfoModal()" aria-label="Close" class="w-8 h-8 rounded-full bg-safari-parchment hover:bg-safari-sand flex items-center justify-center text-sm font-bold text-safari-deepDark">✕</button>
-      </div>
-      <div id="infoModalBody" class="py-4 text-xs sm:text-sm text-safari-olive space-y-3"></div>
-      <button onclick="closeInfoModal()" class="w-full py-2.5 rounded-xl bg-safari-forest text-white font-bold text-xs">Close</button>
-    </div>
-  </div>
-
   <!-- Milestone Lightbox Modal -->
   <div id="milestoneModal" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-md hidden items-center justify-center p-4">
     <div class="bg-white rounded-3xl max-w-sm sm:max-w-md w-full overflow-hidden shadow-2xl relative animate-float-slow">
@@ -1113,16 +1103,13 @@
   <div id="toastContainer" class="fixed bottom-6 right-6 z-50 flex flex-col gap-2 pointer-events-none"></div>
 
   <script>
-    /* Event: Sunday, November 8, 2026 - Holy Mass at 11:30 AM (Philippine Time) */
+    /* Event: Sunday, November 8, 2026 - Christening at 11:30 AM (Philippine Time) */
     const EVENT_DATE = new Date('2026-11-08T11:30:00+08:00');
 
     const VENUES = {
       church: "Minor Basilica and Parish of Our Lady of the Most Holy Rosary, Sto. Rosario St., Angeles City, Pampanga",
       resort: "CC Resort, Porac, Pampanga"
     };
-
-    /* Fill these in with your real details to show them in the "Future Explorer Fund" popup */
-    const FUND_INFO = { gcash: '', bank: '' };
 
     const STORAGE_KEY_RSVP = 'wild_one_rsvp_list';
     const STORAGE_KEY_WISHES = 'wild_one_wishes_list';
@@ -1685,43 +1672,12 @@
     }
 
     function addToCalendarHandler() {
-      const title = encodeURIComponent("Terrence's 1st Birthday - Wild One Safari!");
-      const details = encodeURIComponent("Holy Mass at 11:30 AM (Minor Basilica and Parish of Our Lady of the Most Holy Rosary, Angeles City). Reception at 1:00 PM at CC Resort, Porac, Pampanga. Wear safari khaki/earth tones!");
+      const title = encodeURIComponent("Terrence's 1st Birthday Celebration and Christening");
+      const details = encodeURIComponent("Christening at 11:30 AM (Minor Basilica and Parish of Our Lady of the Most Holy Rosary, Angeles City). Reception at 1:00 PM at CC Resort, Porac, Pampanga. Wear safari khaki/earth tones!");
       const location = encodeURIComponent(VENUES.church);
       const url = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=20261108T033000Z/20261108T100000Z&details=${details}&location=${location}`;
       window.open(url, '_blank');
       showToast("Opening calendar invitation... 📅", "info");
-    }
-
-    function showInfo(icon, title, html) {
-      $('infoModalIcon').innerText = icon;
-      $('infoModalTitle').innerText = title;
-      $('infoModalBody').innerHTML = html;
-      openModal('infoModal');
-    }
-    function closeInfoModal() { closeModal('infoModal'); }
-
-    function showRegistryModal() {
-      const items = [
-        ['🧷', 'Diapers', 'Always needed!'],
-        ['🧻', 'Wet wipes', 'Gentle, fragrance-free'],
-        ['🍼', 'Baby milk / formula', 'And feeding essentials'],
-        ['🛁', 'Bath essentials', 'Baby wash, shampoo & lotion'],
-        ['👕', 'Clothes & sleepwear', 'For his growing wild days']
-      ];
-      showInfo('🍼', 'Baby Essentials', `<p>Practical things Terrence needs every single day:</p>` + items.map(i =>
-        `<div class="flex items-center gap-3 p-3 rounded-xl bg-safari-parchment/70 border border-safari-sage/20"><span class="text-2xl">${i[0]}</span><div><p class="font-bold text-safari-forest">${i[1]}</p><p class="text-[11px]">${i[2]}</p></div></div>`).join('') +
-        `<p class="text-[11px] text-safari-olive/70">Thank you for thinking of our little explorer! 💚</p>`);
-    }
-
-    function showFundModal() {
-      const rows = [];
-      if (FUND_INFO.gcash) rows.push(['GCash', FUND_INFO.gcash]);
-      if (FUND_INFO.bank) rows.push(['Bank', FUND_INFO.bank]);
-      const body = rows.length
-        ? rows.map(r => `<div class="p-3 rounded-xl bg-safari-sand"><p class="text-[11px] uppercase tracking-wider font-bold text-safari-moss">${esc(r[0])}</p><p class="font-bold text-safari-forest break-words">${esc(r[1])}</p></div>`).join('')
-        : `<p class="p-3 rounded-xl bg-safari-sand">Please message Terrence's parents for the Future Explorer Fund details. 🌱</p>`;
-      showInfo('🌱', 'Future Explorer Fund', `<p>Every bit goes toward Terrence's future &mdash; his education and the adventures still waiting for him.</p>${body}<p class="text-[11px] text-safari-olive/70">Your presence is already the best gift. Thank you! 💚</p>`);
     }
 
     /* ---------------- Toasts ---------------- */
@@ -1813,9 +1769,9 @@
 
       addEventListener('keydown', e => {
         if (e.key !== 'Escape') return;
-        ['guestListModal', 'adminLoginModal', 'hostAdminModal', 'infoModal', 'milestoneModal'].forEach(closeModal);
+        ['guestListModal', 'adminLoginModal', 'hostAdminModal', 'milestoneModal'].forEach(closeModal);
       });
-      ['guestListModal', 'adminLoginModal', 'hostAdminModal', 'infoModal', 'milestoneModal'].forEach(id =>
+      ['guestListModal', 'adminLoginModal', 'hostAdminModal', 'milestoneModal'].forEach(id =>
         $(id).addEventListener('click', e => { if (e.target.id === id) closeModal(id); }));
     });
   </script>
