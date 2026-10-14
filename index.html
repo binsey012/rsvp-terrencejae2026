@@ -912,6 +912,19 @@
           <!-- Populated by JavaScript -->
         </div>
 
+        <div class="mt-10">
+          <div class="text-center mb-5">
+            <span class="text-xs uppercase tracking-widest text-safari-terracotta font-bold">From the RSVP Scrapbook</span>
+            <h3 class="font-serif font-black text-2xl sm:text-3xl text-safari-forest mt-1">Special Wishes & Song Requests</h3>
+            <p class="text-safari-olive/80 text-sm max-w-md mx-auto mt-2">
+              Sweet notes and playlist requests shared through the RSVP form.
+            </p>
+          </div>
+          <div id="rsvpNotesGrid" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <!-- Populated by JavaScript -->
+          </div>
+        </div>
+
       </div>
     </section>
 
@@ -1232,14 +1245,19 @@
       try {
         const data = await api('/api/rsvp');
         guests = data.guests; totals = data.totals;
+        rsvpNotes = data.notes || [];
       } catch (err) {
         if (!canFallback(err)) { if (!guests.length) showToast("Couldn't load the guest list right now.", "warning"); return; }
         const list = localRsvps();
         guests = list.map(r => ({ name: r.name, status: r.status }));
         totals = computeTotals(list);
+        rsvpNotes = list
+          .filter(r => r.note)
+          .map(r => ({ name: r.name, note: r.note, createdAt: r.createdAt }));
         adminRsvps = list;
       }
       updateRSVPStats();
+      renderRsvpNotes();
     }
 
     async function loadAdminRsvps() {
@@ -1423,6 +1441,7 @@
 
     /* ---------------- Wishes ---------------- */
     let wishes = [];
+    let rsvpNotes = [];
     async function loadWishes() {
       try {
         wishes = (await api('/api/wishes')).wishes;
@@ -1430,6 +1449,25 @@
         if (canFallback(err)) { try { wishes = JSON.parse(localStorage.getItem(STORAGE_KEY_WISHES)) || []; } catch (e) { wishes = []; } }
       }
       renderWishes();
+    }
+    function renderRsvpNotes() {
+      const container = $('rsvpNotesGrid');
+      if (!rsvpNotes.length) {
+        container.innerHTML = '<p class="sm:col-span-2 text-center text-sm text-safari-olive py-4">Special wishes and song requests will appear here after guests share them through the RSVP form. 🌿</p>';
+        return;
+      }
+      container.innerHTML = rsvpNotes.map((note, i) => `
+        <div style="--d:${(i % 2) * 0.1}s" class="reveal bg-safari-parchment/70 p-4 sm:p-5 rounded-2xl border border-safari-gold/30 shadow-sm text-left">
+          <div class="flex items-center justify-between gap-3 mb-2">
+            <div class="flex items-center gap-2">
+              <span class="text-xl">💌</span>
+              <span class="font-serif font-bold text-safari-forest text-sm sm:text-base">${esc(note.name)}</span>
+            </div>
+            <span class="text-[10px] text-safari-olive/60">${note.createdAt ? new Date(note.createdAt).toLocaleDateString() : 'Just now'}</span>
+          </div>
+          <p class="text-xs sm:text-sm text-safari-olive/90 italic">"${esc(note.note)}"</p>
+        </div>`).join('');
+      observeReveals(container);
     }
     function renderWishes() {
       const container = $('wishesGrid');

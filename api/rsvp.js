@@ -1,6 +1,6 @@
 const { redis, send, readBody, clean, listHash, newId, storageConfigured } = require('./_lib');
 
-/* Public endpoint: GET returns names + status only. POST stores a full RSVP. */
+/* Public endpoint: GET returns names, status, and scrapbook notes only. POST stores a full RSVP. */
 module.exports = async (req, res) => {
   if (!storageConfigured()) return send(res, 503, { error: 'storage_not_configured' });
 
@@ -20,6 +20,9 @@ module.exports = async (req, res) => {
       });
       return send(res, 200, {
         guests: all.map((r) => ({ name: r.name, status: r.status })),
+        notes: all
+          .filter((r) => r.note)
+          .map((r) => ({ name: r.name, note: r.note, createdAt: r.createdAt })),
         totals: { adults, kids, explorers: adults + kids, declined }
       });
     }
